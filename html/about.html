@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio & Vault</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        :root {
+            --accent: #f472b6;
+            --accent-cyan: #38bdf8;
+            --accent-gradient: linear-gradient(135deg, #38bdf8 0%, #f472b6 100%);
+            --accent-glow: rgba(244, 114, 182, 0.4);
+            --bg-color: #0b0f19;
+            --text-main: #f8fafc;
+            --text-secondary: #94a3b8;
+            --border-color: rgba(255, 255, 255, 0.12);
+        }
+        [data-theme="light"] {
+            --bg-color: #f8fafc;
+            --text-main: #0f172a;
+            --text-secondary: #475569;
+            --border-color: rgba(0, 0, 0, 0.12);
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(56, 189, 248, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(244, 114, 182, 0.08) 0%, transparent 40%);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(11, 15, 25, 0.35);
+            backdrop-filter: blur(20px) saturate(200%);
+            -webkit-backdrop-filter: blur(20px) saturate(200%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        [data-theme="light"] header {
+            background: rgba(248, 250, 252, 0.75);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        }
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-main);
+            text-decoration: none;
+        }
+        .logo span {
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .nav-right-info {
+            display: flex;
+            align-items: center;
+        }
+        .system-widget-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .sys-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 6px 12px;
+            border-radius: 14px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--text-main);
+            backdrop-filter: blur(12px);
+            transition: all 0.3s ease;
+        }
+        [data-theme="light"] .sys-badge {
+            background: rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+        }
+        .sys-badge:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(56, 189, 248, 0.3);
+            transform: translateY(-1px);
+        }
+        [data-theme="light"] .sys-badge:hover {
+            background: rgba(0, 0, 0, 0.06);
+        }
+        .sys-badge.battery-box i {
+            color: var(--accent-cyan);
+        }
+        .sys-badge.date-box i {
+            color: #f43f5e;
+        }
+        .sys-badge.time-box i {
+            color: #fbbf24;
+        }
+        .custom-dropdown {
+            position: relative;
+            cursor: pointer;
+            user-select: none;
+        }
+        .dropdown-selected {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            display: none;
+            flex-direction: column;
+            z-index: 100;
+            min-width: 70px;
+            backdrop-filter: blur(15px);
+        }
+        [data-theme="light"] .dropdown-menu {
+            background: rgba(255, 255, 255, 0.95);
+        }
+        .custom-dropdown.active .dropdown-menu {
+            display: flex;
+        }
+        .dropdown-item {
+            padding: 8px 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+        .dropdown-item:hover, .dropdown-item.selected {
+            background: var(--accent);
+            color: #fff;
+        }
+        .theme-toggle-btn {
+            background: none;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            cursor: pointer;
+            padding: 6px 10px;
+            border-radius: 14px;
+            font-size: 0.8rem;
+            color: var(--text-main);
+            transition: all 0.3s ease;
+        }
+        [data-theme="light"] .theme-toggle-btn {
+            border: 1px solid rgba(0, 0, 0, 0.08);
+        }
+        .theme-toggle-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--accent);
+        }
+        @media (max-width: 1024px) {
+            .system-widget-container {
+                display: none;
+            }
+        }
+        main {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 6rem 2rem 2rem;
+        }
+        .hero-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .profile-card {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid var(--border-color);
+            border-radius: 30px;
+            padding: 2.5rem;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5),
+                        inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
+            z-index: 2;
+            width: 520px;
+            animation: cardPopIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        [data-theme="light"] .profile-card {
+            background: rgba(255, 255, 255, 0.85);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.08),
+                        inset 0 1px 0 0 rgba(255, 255, 255, 0.8);
+        }
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.2rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .profile-avatar {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: var(--accent-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            color: #fff;
+            box-shadow: 0 0 25px var(--accent-glow);
+            flex-shrink: 0;
+            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+        .profile-info h2 {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 4px;
+        }
+        .profile-info p {
+            color: var(--accent-cyan);
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        .profile-details {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 1.5rem;
+        }
+        .detail-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        .detail-item i {
+            color: var(--accent);
+            margin-top: 4px;
+            font-size: 1rem;
+            width: 18px;
+            text-align: center;
+        }
+        .detail-item span {
+            color: var(--text-main);
+            font-weight: 500;
+        }
+        .profile-footer-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+        .profile-tag {
+            font-size: 0.75rem;
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--accent-cyan);
+            padding: 6px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            font-weight: 600;
+        }
+        .profile-arrow {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-main);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            text-decoration: none;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        [data-theme="light"] .profile-arrow {
+            background: rgba(0, 0, 0, 0.05);
+            border-color: rgba(0, 0, 0, 0.05);
+        }
+        .profile-arrow:hover {
+            background: var(--accent);
+            color: #fff;
+            box-shadow: 0 0 20px var(--accent-glow);
+            transform: scale(1.08);
+            border-color: var(--accent);
+        }
+        .right-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 2;
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 8px;
+            border-radius: 30px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3),
+                        inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+        }
+        [data-theme="light"] .right-menu {
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+        }
+        .orbit-btn {
+            position: relative;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            text-decoration: none;
+            opacity: 0;
+            transform: scale(0) translateX(15px);
+            animation: popOutRight 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        [data-theme="light"] .orbit-btn {
+            background: rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        .orbit-btn::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            right: 55px;
+            top: 50%;
+            transform: translateY(-50%) scale(0.8);
+            background: rgba(15, 23, 42, 0.95);
+            color: #fff;
+            padding: 5px 12px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.25s ease;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            pointer-events: none;
+        }
+        [data-theme="light"] .orbit-btn::after {
+            background: rgba(255, 255, 255, 0.95);
+            color: #0f172a;
+        }
+        .orbit-btn:hover::after {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(-50%) scale(1);
+        }
+        .btn-1 { animation-delay: 0.15s; }
+        .btn-2 { animation-delay: 0.25s; }
+        .btn-3 { animation-delay: 0.35s; }
+        .orbit-btn:hover {
+            transform: scale(1.1) translateX(-2px);
+            border-color: var(--accent);
+            color: #fff;
+            background: var(--accent);
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+        @keyframes cardPopIn {
+            0% { opacity: 0; transform: scale(0.8) translateY(20px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        @keyframes popOutRight {
+            0% { opacity: 0; transform: scale(0) translateX(15px); }
+            70% { transform: scale(1.08) translateX(-2px); }
+            100% { opacity: 1; transform: scale(1) translateX(0); }
+        }
+        footer {
+            position: relative;
+            text-align: center;
+            padding: 2.5rem 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            background: rgba(11, 15, 25, 0.35);
+            backdrop-filter: blur(20px) saturate(200%);
+            box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
+        }
+        [data-theme="light"] footer {
+            background: rgba(248, 250, 252, 0.75);
+            border-top: 1px solid rgba(0, 0, 0, 0.08);
+        }
+        @media (max-width: 768px) {
+            .hero-wrapper {
+                flex-direction: column;
+                gap: 1.5rem;
+                width: 100%;
+                max-width: 380px;
+            }
+            .profile-card {
+                width: 100%;
+                padding: 1.8rem;
+            }
+            .right-menu {
+                flex-direction: row;
+                justify-content: center;
+                flex-wrap: wrap;
+                width: 100%;
+                border-radius: 20px;
+                padding: 10px;
+            }
+            .orbit-btn {
+                transform: scale(1) !important;
+                animation: popOutRight 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            }
+            .orbit-btn::after {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo"><span>lnhwtan</span></a>
+            <div class="nav-right-info">
+                <div class="system-widget-container">
+                    <div class="sys-badge battery-box" id="batteryIndicator" title="Trạng thái pin thiết bị">
+                        <i class="fa-solid fa-battery-half" id="batteryIcon"></i>
+                        <span id="batteryLevelText">--%</span>
+                    </div>
+                    <div class="sys-badge date-box" title="Ngày tháng năm hiện tại">
+                        <i class="fa-regular fa-calendar-days"></i>
+                        <span id="dateText">--/--/----</span>
+                    </div>
+                    <div class="sys-badge time-box" title="Thời gian hệ thống">
+                        <i class="fa-regular fa-clock"></i>
+                        <span id="timeText">--:--:-- --</span>
+                    </div>
+                    <div class="sys-badge custom-dropdown" id="customLangDropdown" title="Chọn ngôn ngữ">
+                        <i class="fa-solid fa-globe" style="color: var(--accent-pink);"></i>
+                        <div class="dropdown-selected" id="dropdownSelected">
+                            <span id="currentLangText">VN</span>
+                            <i class="fa-solid fa-chevron-down" style="font-size: 0.65rem;"></i>
+                        </div>
+                        <div class="dropdown-menu" id="dropdownMenu">
+                            <div class="dropdown-item selected" data-value="vi">VN</div>
+                            <div class="dropdown-item" data-value="en">ENG</div>
+                            <div class="dropdown-item" data-value="jp">JP</div>
+                        </div>
+                    </div>
+                    <button class="sys-badge theme-toggle-btn" id="themeToggleBtn" title="Chuyển giao diện Sáng/Tối">
+                        <i class="fa-solid fa-moon" id="themeIcon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main>
+        <div class="hero-wrapper">
+            <div class="profile-card">
+                <div class="profile-header">
+                    <div class="profile-avatar">
+                        <i class="fa-solid fa-user-astronaut"></i>
+                    </div>
+                    <div class="profile-info">
+                        <h2>Lê Nhựt An</h2>
+                        <p data-i18n="role">Student</p>
+                    </div>
+                </div>
+                <div class="profile-details">
+                    <div class="detail-item">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                        <div data-i18n="detail_1">Đang học lớp <strong>10T1 (Toán Chuyên)</strong> tại <span>THPT Chuyên Bến Tre</span></div>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fa-solid fa-code"></i>
+                        <div data-i18n="detail_2">Đam mê lập trình Web, Desktop App (Electron, Python) và xây dựng các hệ thống quản lý dữ liệu Supabase.</div>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fa-solid fa-bullseye"></i>
+                        <div data-i18n="detail_3">Mục tiêu theo đuổi ngành Sư phạm Toán học và phát triển các công cụ hỗ trợ học tập thông minh.</div>
+                    </div>
+                </div>
+                <div class="profile-footer-actions">
+                    <span class="profile-tag">CBT K36_2026-2029</span>
+                    <a href="index.html" class="profile-arrow" title="Trở về trang chủ">
+                        <i class="fa-solid fa-arrow-left"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="right-menu">
+                <a href="index.html" class="orbit-btn btn-1" data-tooltip="Trang chủ"><i class="fa-solid fa-house"></i></a>
+                <a href="contact.html" class="orbit-btn btn-2" data-tooltip="Liên hệ"><i class="fa-solid fa-phone"></i></a>
+                <a href="note.html" class="orbit-btn btn-3" data-tooltip="Ghi chú"><i class="fa-solid fa-file-lines"></i></a>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2026 Designed & Built with <i class="fa-solid fa-heart" style="color: var(--accent); filter: drop-shadow(0 0 8px var(--accent));"></i> By Nhựt An.</p>
+    </footer>
+    <script>
+      const translations = {
+          vi: {
+              role: "Student",
+              detail_1: "Đang học lớp <strong>10T1 (Toán Chuyên)</strong> tại <span>THPT Chuyên Bến Tre</span>",
+              detail_2: "Đam mê lập trình Web, Desktop App (Electron, Python) và xây dựng các hệ thống quản lý dữ liệu Supabase.",
+              detail_3: "Mục tiêu theo đuổi ngành Sư phạm Toán học và phát triển các công cụ hỗ trợ học tập thông minh."
+          },
+          en: {
+              role: "Student",
+              detail_1: "Studying in class <strong>10T1 (Math Major)</strong> at <span>Ben Tre High School for the Gifted</span>",
+              detail_2: "Passionate about Web Development, Desktop Apps (Electron, Python) and building Supabase data management systems.",
+              detail_3: "Aiming to pursue Mathematics Education and develop smart learning support tools."
+          },
+          jp: {
+              role: "学生",
+              detail_1: "<strong>10T1（数学専攻）</strong>クラスに在籍 <span>ベンチェ地方高等学校</span>",
+              detail_2: "ウェブ開発、デスクトップアプリ（Electron、Python）、Supabaseデータ管理システムの構築に情熱を注いでいます。",
+              detail_3: "数学教育を追求し、スマートな学習支援ツールを開発することを目指しています。"
+          }
+      };
+      function changeLanguage(lang) {
+          if (!translations[lang]) return;
+          document.querySelectorAll('[data-i18n]').forEach(el => {
+              const key = el.getAttribute('data-i18n');
+              if (translations[lang][key]) {
+                  el.innerHTML = translations[lang][key];
+              }
+          });
+      }
+      const customLangDropdown = document.getElementById('customLangDropdown');
+      const currentLangText = document.getElementById('currentLangText');
+      const dropdownItems = document.querySelectorAll('.dropdown-item');
+      const savedLang = localStorage.getItem('language') || 'vi';
+      changeLanguage(savedLang);
+      currentLangText.textContent = savedLang === 'vi' ? 'VN' : (savedLang === 'en' ? 'ENG' : 'JP');
+      dropdownItems.forEach(item => {
+          if (item.getAttribute('data-value') === savedLang) {
+              item.classList.add('selected');
+          } else {
+              item.classList.remove('selected');
+          }
+      });
+      customLangDropdown.addEventListener('click', (e) => {
+          e.stopPropagation();
+          customLangDropdown.classList.toggle('active');
+      });
+      window.addEventListener('click', () => {
+          customLangDropdown.classList.remove('active');
+      });
+      dropdownItems.forEach(item => {
+          item.addEventListener('click', () => {
+              const lang = item.getAttribute('data-value');
+              const text = item.textContent;
+              currentLangText.textContent = text;
+              changeLanguage(lang);
+              localStorage.setItem('language', lang);
+              dropdownItems.forEach(i => i.classList.remove('selected'));
+              item.classList.add('selected');
+              customLangDropdown.classList.remove('active');
+          });
+      });
+      const themeToggleBtn = document.getElementById('themeToggleBtn');
+      const themeIcon = document.getElementById('themeIcon');
+      const htmlElement = document.documentElement;
+      function updateThemeIcon(theme) {
+          if (theme === 'light') {
+              themeIcon.className = "fa-solid fa-sun";
+              themeIcon.style.color = "#f59e0b";
+          } else {
+              themeIcon.className = "fa-solid fa-moon";
+              themeIcon.style.color = "var(--text-primary)";
+          }
+      }
+      const savedTheme = localStorage.getItem('theme') || 'dark';
+      htmlElement.setAttribute('data-theme', savedTheme);
+      updateThemeIcon(savedTheme);
+      themeToggleBtn.addEventListener('click', () => {
+          const currentTheme = htmlElement.getAttribute('data-theme');
+          const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+          htmlElement.setAttribute('data-theme', newTheme);
+          localStorage.setItem('theme', newTheme);
+          updateThemeIcon(newTheme);
+      });
+      const cursorDot = document.createElement('div');
+      cursorDot.className = 'cursor-dot';
+      const cursorOutline = document.createElement('div');
+      cursorOutline.className = 'cursor-outline';
+      document.body.appendChild(cursorDot);
+      document.body.appendChild(cursorOutline);
+      let mouseX = 0, mouseY = 0;
+      let outlineX = 0, outlineY = 0;
+      window.addEventListener('mousemove', (e) => {
+          mouseX = e.clientX;
+          mouseY = e.clientY;
+          cursorDot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
+      });
+      function animateCursor() {
+          outlineX += (mouseX - outlineX) * 0.2;
+          outlineY += (mouseY - outlineY) * 0.2;
+          cursorOutline.style.transform = `translate(${outlineX}px, ${outlineY}px) translate(-50%, -50%)`;
+          requestAnimationFrame(animateCursor);
+      }
+      animateCursor();
+      const interactiveElements = document.querySelectorAll('a, button, .btn, .tech-tag, .feature-card, .project-card-custom');
+      interactiveElements.forEach(el => {
+          el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+          el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+      });
+      function updateDateTime() {
+          const now = new Date();
+          const day = String(now.getDate()).padStart(2, '0');
+          const month = String(now.getMonth() + 1).padStart(2, '0');
+          const year = now.getFullYear();
+          document.getElementById('dateText').textContent = `${day}/${month}/${year}`;
+          let hours = now.getHours();
+          const minutes = String(now.getMinutes()).padStart(2, '0');
+          const seconds = String(now.getSeconds()).padStart(2, '0');
+          const ampm = hours >= 12 ? 'PM' : 'AM';
+          hours = hours % 12;
+          hours = hours ? hours : 12;
+          const formattedHours = String(hours).padStart(2, '0');
+          document.getElementById('timeText').textContent = `${formattedHours}:${minutes}:${seconds} ${ampm}`;
+      }
+      setInterval(updateDateTime, 1000);
+      updateDateTime();
+      if ('getBattery' in navigator) {
+          navigator.getBattery().then(function(battery) {
+              const batteryLevelText = document.getElementById('batteryLevelText');
+              const batteryIcon = document.getElementById('batteryIcon');
+              function updateBatteryInfo() {
+                  const level = Math.round(battery.level * 100);
+                  batteryLevelText.textContent = level + '%';
+                  if (battery.charging) {
+                      batteryIcon.className = "fa-solid fa-bolt";
+                      batteryIcon.style.color = "#fde047";
+                  } else {
+                      batteryIcon.style.color = "var(--accent-cyan)";
+                      if (level >= 80) batteryIcon.className = "fa-solid fa-battery-full";
+                      else if (level >= 50) batteryIcon.className = "fa-solid fa-battery-three-quarters";
+                      else if (level >= 25) batteryIcon.className = "fa-solid fa-battery-half";
+                      else batteryIcon.className = "fa-solid fa-battery-quarter";
+                  }
+              }
+              updateBatteryInfo();
+              battery.addEventListener('levelchange', updateBatteryInfo);
+              battery.addEventListener('chargingchange', updateBatteryInfo);
+          });
+      } else {
+          document.getElementById('batteryIndicator').style.display = 'none';
+      }
+    </script>
+</body>
+</html>

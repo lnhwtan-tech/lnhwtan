@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="..\css\style.css">
+</head>
+<body>
+<header id="navbar">
+    <div class="nav-container">
+        <a href="index.html" class="logo"><span>lnhwtan</span></a>
+        <div class="dynamic-island" id="dynamicIsland">
+            <div class="island-collapsed">
+                <span class="pulse-icon"></span>
+                <span class="island-text" data-i18n="menu">Menu</span>
+            </div>
+            <div class="island-expanded">
+                <div class="island-nav-links">
+                    <a href="index.html" class="active" data-i18n="nav_home">Trang Chủ</a>
+                    <a href="about.html" data-i18n="nav_about">Về Tôi</a>
+                    <a href="skills.html" data-i18n="nav_skills">Kỹ Năng</a>
+                    <a href="projects.html" data-i18n="nav_projects">Dự Án</a>
+                    <a href="contact.html" data-i18n="nav_contact">Liên Hệ</a>
+                </div>
+            </div>
+        </div>
+        <div class="nav-right-info">
+            <div class="system-widget-container">
+                <div class="sys-badge battery-box" id="batteryIndicator" title="Trạng thái pin thiết bị">
+                    <i class="fa-solid fa-battery-half" id="batteryIcon"></i>
+                    <span id="batteryLevelText">--%</span>
+                </div>
+                <div class="sys-badge date-box" title="Ngày tháng năm hiện tại">
+                    <i class="fa-regular fa-calendar-days"></i>
+                    <span id="dateText">--/--/----</span>
+                </div>
+                <div class="sys-badge time-box" title="Thời gian hệ thống">
+                    <i class="fa-regular fa-clock"></i>
+                    <span id="timeText">--:--:-- --</span>
+                </div>
+                <div class="sys-badge custom-dropdown" id="customLangDropdown" title="Chọn ngôn ngữ">
+                    <i class="fa-solid fa-globe" style="color: var(--accent-pink);"></i>
+                    <div class="dropdown-selected" id="dropdownSelected">
+                        <span id="currentLangText">VN</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="dropdown-menu" id="dropdownMenu">
+                        <div class="dropdown-item" data-value="vi">VN</div>
+                        <div class="dropdown-item" data-value="en">ENG</div>
+                        <div class="dropdown-item" data-value="jp">JP</div>
+                    </div>
+                </div>
+                <button class="sys-badge theme-toggle-btn" id="themeToggleBtn" title="Chuyển giao diện Sáng/Tối">
+                    <i class="fa-solid fa-moon" id="themeIcon"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</header>
+    <section id="hero">
+        <div class="hero-content">
+            <div class="badge"><i class="fa-solid fa-sparkles"></i><span data-i18n="badge_welcome">Welcome</span></div>
+            <h1 data-i18n="hero_title">Xin chào</h1>
+            <p data-i18n="hero_desc">Chào mừng bạn đến thăm website của tui</p>
+            <div class="hero-btns">
+                <a href="projects.html" class="btn primary-btn"><span data-i18n="btn_projects">Xem Dự Án</span> <i class="fa-solid fa-arrow-right"></i></a>
+                <a href="contact.html" class="btn secondary-btn" data-i18n="btn_contact">Liên Hệ Ngay</a>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="code-card">
+                <div class="card-header">
+                    <span class="dot red"></span>
+                    <span class="dot yellow"></span>
+                    <span class="dot green"></span>
+                    <span class="file-name">welcome.js</span>
+                </div>
+                <pre><code><span class="keyword">const</span> <span class="variable">developer</span> = {
+    <span class="property">name</span>: <span class="string">"Lê Nhựt An"</span>,
+    <span class="property">role</span>: <span class="string">"Developer"</span>,
+    <span class="property">skills</span>: [<span class="string">"HTML/CSS"</span>, <span class="string">"JS"</span>, <span class="string">"Python"</span>, <span class="string">"Supabase"</span>],
+    <span class="property">status</span>: <span class="string">"Ready!"</span>
+};</code></pre>
+            </div>
+        </div>
+    </section>
+    <footer>
+        <div class="footer-container">
+            <div class="footer-col footer-brand">
+                <h3><span>lnhwtan</span></h3>
+                <p data-i18n="footer_desc">Nền tảng chia sẻ tài liệu Toán học & Lập trình, được thiết kế và xây dựng với sự tỉ mỉ trong từng chi tiết.</p>
+                <div class="footer-socials">
+                    <a href="https://github.com" target="_blank" title="GitHub"><i class="fa-brands fa-github"></i></a>
+                    <a href="https://facebook.com" target="_blank" title="Facebook"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="contact.html" title="Liên hệ"><i class="fa-solid fa-envelope"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4 data-i18n="footer_links_title">Liên kết nhanh</h4>
+                <ul>
+                    <li><a href="index.html"><i class="fa-solid fa-chevron-right"></i> <span data-i18n="nav_home">Trang chủ</span></a></li>
+                    <li><a href="about.html"><i class="fa-solid fa-chevron-right"></i> <span data-i18n="nav_about">Giới thiệu</span></a></li>
+                    <li><a href="note.html"><i class="fa-solid fa-chevron-right"></i> <span data-i18n="nav_notes">Ghi chú & Tài liệu</span></a></li>
+                    <li><a href="contact.html"><i class="fa-solid fa-chevron-right"></i> <span data-i18n="nav_contact">Liên hệ</span></a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4 data-i18n="footer_edu_title">Thông tin học tập</h4>
+                <ul>
+                    <li><i class="fa-solid fa-graduation-cap" style="color: var(--accent-pink);"></i> 10T1 - <span data-i18n="edu_class">Toán Chuyên</span></li>
+                    <li><i class="fa-solid fa-school" style="color: var(--accent-cyan);"></i> <span data-i18n="edu_school">THPT Chuyên Bến Tre</span></li>
+                    <li><i class="fa-solid fa-calendar-days" style="color: var(--accent-pink);"></i> <span data-i18n="edu_year">Niên khóa 2026 - 2027</span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Lê Nhựt An. All rights reserved.</p>
+        </div>
+    </footer>
+    <script src="../js/main.js"></script>
+    <script>
+      const translations = {
+          vi: {
+              menu: "Menu",
+              nav_home: "Trang Chủ",
+              nav_about: "Về Tôi",
+              nav_skills: "Kỹ Năng",
+              nav_projects: "Dự Án",
+              nav_contact: "Liên Hệ",
+              nav_notes: "Ghi chú & Tài liệu",
+              badge_welcome: "Welcome",
+              hero_title: "Xin chào",
+              hero_desc: "Chào mừng bạn đến thăm website của tui",
+              btn_projects: "Xem Dự Án",
+              btn_contact: "Liên Hệ Ngay",
+              footer_desc: "Nền tảng chia sẻ tài liệu Toán học & Lập trình, được thiết kế và xây dựng với sự tỉ mỉ trong từng chi tiết.",
+              footer_links_title: "Liên kết nhanh",
+              footer_edu_title: "Thông tin học tập",
+              edu_class: "Toán Chuyên",
+              edu_school: "THPT Chuyên Bến Tre",
+              edu_year: "Niên khóa 2026 - 2027"
+          },
+          en: {
+              menu: "Menu",
+              nav_home: "Home",
+              nav_about: "About Me",
+              nav_skills: "Skills",
+              nav_projects: "Projects",
+              nav_contact: "Contact",
+              nav_notes: "Notes & Docs",
+              badge_welcome: "Welcome",
+              hero_title: "Hello there",
+              hero_desc: "Welcome to my personal website",
+              btn_projects: "View Projects",
+              btn_contact: "Contact Now",
+              footer_desc: "A platform for sharing Math & Programming documents, designed and built with meticulous attention to detail.",
+              footer_links_title: "Quick Links",
+              footer_edu_title: "Education Info",
+              edu_class: "Math Specialized",
+              edu_school: "Ben Tre High School for the Gifted",
+              edu_year: "Academic Year 2026 - 2027"
+          },
+          jp: {
+              menu: "メニュー",
+              nav_home: "ホーム",
+              nav_about: "自己紹介",
+              nav_skills: "スキル",
+              nav_projects: "プロジェクト",
+              nav_contact: "連絡先",
+              nav_notes: "ノート・資料",
+              badge_welcome: "ようこそ",
+              hero_title: "こんにちは",
+              hero_desc: "私のウェブサイトへようこそ",
+              btn_projects: "プロジェクトを見る",
+              btn_contact: "今すぐ連絡",
+              footer_desc: "数学とプログラミングのドキュメントを共有するプラットフォームです。",
+              footer_links_title: "クイックリンク",
+              footer_edu_title: "教育情報",
+              edu_class: "数学専門",
+              edu_school: "ベンチェ地方高等学校",
+              edu_year: "2026 - 2027年度"
+          }
+      };
+      function changeLanguage(lang) {
+          if (!translations[lang]) return;
+          document.querySelectorAll('[data-i18n]').forEach(el => {
+              const key = el.getAttribute('data-i18n');
+              if (translations[lang][key]) {
+                  el.textContent = translations[lang][key];
+              }
+          });
+      }
+      const customLangDropdown = document.getElementById('customLangDropdown');
+      const currentLangText = document.getElementById('currentLangText');
+      const dropdownItems = document.querySelectorAll('.dropdown-item');
+      const savedLang = localStorage.getItem('language') || 'vi';
+      changeLanguage(savedLang);
+      currentLangText.textContent = savedLang === 'vi' ? 'VN' : (savedLang === 'en' ? 'ENG' : 'JP');
+      dropdownItems.forEach(item => {
+          if (item.getAttribute('data-value') === savedLang) {
+              item.classList.add('selected');
+          } else {
+              item.classList.remove('selected');
+          }
+      });
+      customLangDropdown.addEventListener('click', (e) => {
+          e.stopPropagation();
+          customLangDropdown.classList.toggle('active');
+      });
+      window.addEventListener('click', () => {
+          customLangDropdown.classList.remove('active');
+      });
+      dropdownItems.forEach(item => {
+          item.addEventListener('click', () => {
+              const lang = item.getAttribute('data-value');
+              const text = item.textContent;
+              currentLangText.textContent = text;
+              changeLanguage(lang);
+              localStorage.setItem('language', lang);
+              dropdownItems.forEach(i => i.classList.remove('selected'));
+              item.classList.add('selected');
+              customLangDropdown.classList.remove('active');
+          });
+      });
+      const themeToggleBtn = document.getElementById('themeToggleBtn');
+      const themeIcon = document.getElementById('themeIcon');
+      const htmlElement = document.documentElement;
+      function updateThemeIcon(theme) {
+          if (theme === 'light') {
+              themeIcon.className = "fa-solid fa-sun";
+              themeIcon.style.color = "#f59e0b";
+          } else {
+              themeIcon.className = "fa-solid fa-moon";
+              themeIcon.style.color = "var(--text-primary)";
+          }
+      }
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme) {
+          htmlElement.setAttribute('data-theme', savedTheme);
+          updateThemeIcon(savedTheme);
+      } else {
+          updateThemeIcon(htmlElement.getAttribute('data-theme') || 'dark');
+      }
+      themeToggleBtn.addEventListener('click', () => {
+          const currentTheme = htmlElement.getAttribute('data-theme');
+          const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+          htmlElement.setAttribute('data-theme', newTheme);
+          localStorage.setItem('theme', newTheme);
+          updateThemeIcon(newTheme);
+      });
+      function updateDateTime() {
+          const now = new Date();
+          const day = String(now.getDate()).padStart(2, '0');
+          const month = String(now.getMonth() + 1).padStart(2, '0');
+          const year = now.getFullYear();
+          document.getElementById('dateText').textContent = `${day}/${month}/${year}`;
+          let hours = now.getHours();
+          const minutes = String(now.getMinutes()).padStart(2, '0');
+          const seconds = String(now.getSeconds()).padStart(2, '0');
+          const ampm = hours >= 12 ? 'PM' : 'AM';
+          hours = hours % 12;
+          hours = hours ? hours : 12;
+          const formattedHours = String(hours).padStart(2, '0');
+          document.getElementById('timeText').textContent = `${formattedHours}:${minutes}:${seconds} ${ampm}`;
+      }
+      setInterval(updateDateTime, 1000);
+      updateDateTime();
+      if ('getBattery' in navigator) {
+          navigator.getBattery().then(function(battery) {
+              const batteryLevelText = document.getElementById('batteryLevelText');
+              const batteryIcon = document.getElementById('batteryIcon');
+              function updateBatteryInfo() {
+                  const level = Math.round(battery.level * 100);
+                  batteryLevelText.textContent = level + '%';
+                  if (battery.charging) {
+                      batteryIcon.className = "fa-solid fa-bolt";
+                      batteryIcon.style.color = "#fde047";
+                  } else {
+                      batteryIcon.style.color = "var(--accent-cyan)";
+                      if (level >= 80) batteryIcon.className = "fa-solid fa-battery-full";
+                      else if (level >= 50) batteryIcon.className = "fa-solid fa-battery-three-quarters";
+                      else if (level >= 25) batteryIcon.className = "fa-solid fa-battery-half";
+                      else batteryIcon.className = "fa-solid fa-battery-quarter";
+                  }
+              }
+              updateBatteryInfo();
+              battery.addEventListener('levelchange', updateBatteryInfo);
+              battery.addEventListener('chargingchange', updateBatteryInfo);
+          });
+      } else {
+          document.getElementById('batteryIndicator').style.display = 'none';
+      }
+      const cursorDot = document.createElement('div');
+      cursorDot.className = 'cursor-dot';
+      const cursorOutline = document.createElement('div');
+      cursorOutline.className = 'cursor-outline';
+      document.body.appendChild(cursorDot);
+      document.body.appendChild(cursorOutline);
+      let mouseX = 0, mouseY = 0;
+      let outlineX = 0, outlineY = 0;
+      window.addEventListener('mousemove', (e) => {
+          mouseX = e.clientX;
+          mouseY = e.clientY;
+          cursorDot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
+      });
+      function animateCursor() {
+          outlineX += (mouseX - outlineX) * 0.2;
+          outlineY += (mouseY - outlineY) * 0.2;
+          cursorOutline.style.transform = `translate(${outlineX}px, ${outlineY}px) translate(-50%, -50%)`;
+          requestAnimationFrame(animateCursor);
+      }
+      animateCursor();
+      const interactiveElements = document.querySelectorAll('a, button, .btn, .tech-tag, .feature-card, .project-card-custom');
+      interactiveElements.forEach(el => {
+          el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+          el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+      });
+    </script>
+</body>
+</html>

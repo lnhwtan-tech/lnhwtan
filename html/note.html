@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Me & Vault</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        :root {
+            --accent: #38bdf8;
+            --accent-secondary: #818cf8;
+            --accent-gradient: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+            --accent-glow: rgba(56, 189, 248, 0.35);
+            --bg-color: #07090e;
+            --card-bg: rgba(13, 18, 30, 0.7);
+            --text-main: #f8fafc;
+            --text-secondary: #94a3b8;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-color-focus: rgba(56, 189, 248, 0.5);
+        }
+        [data-theme="light"] {
+            --bg-color: #f8fafc;
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --text-main: #0f172a;
+            --text-secondary: #475569;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --border-color-focus: rgba(56, 189, 248, 0.6);
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(56, 189, 248, 0.06) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(129, 140, 248, 0.06) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, var(--bg-color) 0%, transparent 100%);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(7, 9, 14, 0.6);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-bottom: 1px solid var(--border-color);
+        }
+        [data-theme="light"] header {
+            background: rgba(248, 250, 252, 0.75);
+        }
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--text-main);
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+        .logo span {
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .nav-right-info {
+            display: flex;
+            align-items: center;
+        }
+        .system-widget-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .sys-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            padding: 6px 12px;
+            border-radius: 14px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--text-main);
+            backdrop-filter: blur(12px);
+            transition: all 0.3s ease;
+        }
+        [data-theme="light"] .sys-badge {
+            background: rgba(0, 0, 0, 0.03);
+        }
+        .sys-badge:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(56, 189, 248, 0.3);
+            transform: translateY(-1px);
+        }
+        [data-theme="light"] .sys-badge:hover {
+            background: rgba(0, 0, 0, 0.06);
+        }
+        .sys-badge.battery-box i { color: var(--accent); }
+        .sys-badge.date-box i { color: #f43f5e; }
+        .sys-badge.time-box i { color: #fbbf24; }
+        .custom-dropdown {
+            position: relative;
+            cursor: pointer;
+            user-select: none;
+        }
+        .dropdown-selected {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            display: none;
+            flex-direction: column;
+            z-index: 100;
+            min-width: 70px;
+            backdrop-filter: blur(15px);
+        }
+        [data-theme="light"] .dropdown-menu {
+            background: rgba(255, 255, 255, 0.95);
+        }
+        .custom-dropdown.active .dropdown-menu {
+            display: flex;
+        }
+        .dropdown-item {
+            padding: 8px 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+        .dropdown-item:hover, .dropdown-item.selected {
+            background: var(--accent);
+            color: #07090e;
+        }
+        .theme-toggle-btn {
+            background: none;
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            padding: 6px 10px;
+            border-radius: 14px;
+            font-size: 0.8rem;
+            color: var(--text-main);
+            transition: all 0.3s ease;
+        }
+        @media (max-width: 1024px) {
+            .system-widget-container { display: none; }
+        }
+        main {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 8rem 2rem 4rem;
+        }
+        .about-wrapper {
+            width: 100%;
+            max-width: 1050px;
+            display: grid;
+            grid-template-columns: 1fr 1.4fr;
+            gap: 30px;
+            animation: cardPopIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .profile-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2.5rem 2rem;
+            backdrop-filter: blur(25px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3),
+                        inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .profile-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--accent-gradient);
+        }
+        .anime-avatar-container {
+            position: relative;
+            width: 130px;
+            height: 130px;
+            margin-bottom: 1.5rem;
+        }
+        .anime-avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--accent);
+            box-shadow: 0 0 25px var(--accent-glow);
+            transition: transform 0.3s ease;
+        }
+        .anime-avatar:hover {
+            transform: scale(1.05) rotate(3deg);
+        }
+        .anime-badge {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: var(--accent-gradient);
+            color: #07090e;
+            font-size: 0.7rem;
+            font-weight: 800;
+            padding: 4px 10px;
+            border-radius: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .profile-card h1 {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 4px;
+        }
+        .profile-card .handle {
+            color: var(--accent);
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1.2rem;
+        }
+        .profile-card .bio-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 1.8rem;
+        }
+        .tag {
+            background: rgba(56, 189, 248, 0.08);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            color: var(--accent);
+            padding: 5px 12px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .anime-showcase-box {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-align: left;
+            margin-top: auto;
+        }
+        [data-theme="light"] .anime-showcase-box {
+            background: rgba(0, 0, 0, 0.02);
+        }
+        .anime-showcase-box img {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+        .anime-showcase-info h4 {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+        .anime-showcase-info p {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        .content-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2.5rem;
+            backdrop-filter: blur(25px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3),
+                        inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .content-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--accent-gradient);
+        }
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section-title i {
+            color: var(--accent);
+            font-size: 1.2rem;
+        }
+        .story-text {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+        .story-text strong {
+            color: var(--text-main);
+        }
+        .hobbies-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 2rem;
+        }
+        .hobby-item {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.25s ease;
+        }
+        [data-theme="light"] .hobby-item {
+            background: rgba(0, 0, 0, 0.02);
+        }
+        .hobby-item:hover {
+            border-color: rgba(56, 189, 248, 0.4);
+            transform: translateY(-2px);
+            background: rgba(56, 189, 248, 0.03);
+        }
+        .hobby-item i {
+            font-size: 1.1rem;
+            color: var(--accent);
+        }
+        .hobby-item span {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+        .back-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: color 0.2s ease;
+        }
+        .back-home:hover {
+            color: var(--accent);
+        }
+        @keyframes cardPopIn {
+            0% { opacity: 0; transform: scale(0.95) translateY(15px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        footer {
+            position: relative;
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            background: rgba(7, 9, 14, 0.4);
+            backdrop-filter: blur(20px);
+        }
+        [data-theme="light"] footer {
+            background: rgba(248, 250, 252, 0.75);
+        }
+        @media (max-width: 768px) {
+            .about-wrapper {
+                grid-template-columns: 1fr;
+            }
+            main {
+                padding: 6rem 1rem 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo"><span>lnhwtan</span></a>
+            <div class="nav-right-info">
+                <div class="system-widget-container">
+                    <div class="sys-badge battery-box" id="batteryIndicator" title="Trạng thái pin thiết bị">
+                        <i class="fa-solid fa-battery-half" id="batteryIcon"></i>
+                        <span id="batteryLevelText">--%</span>
+                    </div>
+                    <div class="sys-badge date-box" title="Ngày tháng năm hiện tại">
+                        <i class="fa-regular fa-calendar-days"></i>
+                        <span id="dateText">--/--/----</span>
+                    </div>
+                    <div class="sys-badge time-box" title="Thời gian hệ thống">
+                        <i class="fa-regular fa-clock"></i>
+                        <span id="timeText">--:--:-- --</span>
+                    </div>
+                    <div class="sys-badge custom-dropdown" id="customLangDropdown" title="Chọn ngôn ngữ">
+                        <i class="fa-solid fa-globe" style="color: var(--accent);"></i>
+                        <div class="dropdown-selected" id="dropdownSelected">
+                            <span id="currentLangText">VN</span>
+                            <i class="fa-solid fa-chevron-down" style="font-size: 0.65rem;"></i>
+                        </div>
+                        <div class="dropdown-menu" id="dropdownMenu">
+                            <div class="dropdown-item selected" data-value="vi">VN</div>
+                            <div class="dropdown-item" data-value="en">ENG</div>
+                            <div class="dropdown-item" data-value="ja">JP</div>
+                        </div>
+                    </div>
+                    <button class="sys-badge theme-toggle-btn" id="themeToggleBtn" title="Chuyển giao diện Sáng/Tối">
+                        <i class="fa-solid fa-moon" id="themeIcon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main>
+        <div class="about-wrapper">
+            <div class="profile-card">
+                <div class="anime-avatar-container">
+                    <img src="../img/avt.jpg" alt="Anime Avatar" class="anime-avatar">
+                    <div class="anime-badge">K36</div>
+                </div>
+                <h1>Lê Nhựt An</h1>
+                <div class="handle">@lnhwtan</div>
+                <div class="bio-tags">
+                    <span class="tag" id="tag-school">THPT Chuyên Bến Tre</span>
+                    <span class="tag" id="tag-class">10T1 (Toán Chuyên)</span>
+                    <span class="tag" id="tag-origin">Bến Tre / Vĩnh Long</span>
+                </div>
+                <div class="anime-showcase-box">
+                    <img src="https://images.unsplash.com/photo-1578632767115-351597cf2477?w=200&auto=format&fit=crop&q=80" alt="Anime Companion">
+                    <div class="anime-showcase-info">
+                        <h4 id="companion-title">Vibe & Music</h4>
+                        <p id="companion-desc">Đồng hành cùng giai điệu & code mỗi ngày.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="content-card">
+                <div>
+                    <div class="section-title">
+                        <i class="fa-solid fa-user-astronaut"></i>
+                        <span id="txt-about-title">Giới thiệu bản thân</span>
+                    </div>
+                    <p class="story-text" id="story-p1">
+                        Hi everyone! My name is <strong>Lê Nhựt An</strong>, and you can also call me <strong>lnhwtan</strong>. I was born and raised in Ben Tre (or Vinh Long now). I am in <strong>Class 10T1</strong> at <strong>Ben Tre High School for the Gifted</strong>, and I am part of <strong>K36</strong>.
+                    </p>
+                    <p class="story-text" id="story-p2">
+                        Before, I did not really love Math. But when I saw the cool and fun side of it, I decided to choose it and take the exam for this school.
+                    </p>
+                    <p class="story-text" id="story-p3">
+                        In my free time, I like listening to music and playing badminton. I often ask my friends to go to the badminton court to play together. After a long day of studying, listening to my favorite song helps me relax and feel better.
+                    </p>
+                    <div class="hobbies-grid">
+                        <div class="hobby-item">
+                            <i class="fa-solid fa-headphones-simple"></i>
+                            <span id="hobby-music">Nghe nhạc & Thư giãn</span>
+                        </div>
+                        <div class="hobby-item">
+                            <i class="fa-solid fa-feather-pointed"></i>
+                            <span id="hobby-badminton">Đánh cầu lông</span>
+                        </div>
+                        <div class="hobby-item">
+                            <i class="fa-solid fa-calculator"></i>
+                            <span id="hobby-math">Khám phá Toán học</span>
+                        </div>
+                        <div class="hobby-item">
+                            <i class="fa-solid fa-code"></i>
+                            <span id="hobby-code">Lập trình & Phát triển web</span>
+                        </div>
+                    </div>
+                </div>
+                <a href="about.html" class="back-home">
+                    <i class="fa-solid fa-arrow-left"></i> <span id="txt-back">Quay lại trang trước</span>
+                </a>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2026 Lê Nhựt An. All rights reserved.</p>
+    </footer>
+    <script>
+        const translations = {
+            vi: {
+                aboutTitle: "Giới thiệu bản thân",
+                storyP1: "Xin chào mọi người! Mình tên là <strong>Lê Nhựt An</strong>, các bạn cũng có thể gọi mình là <strong>lnhwtan</strong>. Mình sinh ra và lớn lên ở Bến Tre (nay thuộc Vĩnh Long). Mình đang học tại <strong>lớp 10T1</strong> trường <strong>THPT Chuyên Bến Tre</strong> và là thành viên của khóa <strong>K36</strong>.",
+                storyP2: "Vào thời gian rảnh, mình thích nghe nhạc và đánh cầu lông. Mình thường rủ các bạn ra sân cầu lông để chơi cùng nhau. Sau một ngày dài học tập mệt mỏi, việc nghe bài hát yêu thích giúp mình thư giãn và cảm thấy dễ chịu hơn rất nhiều.",
+                storyP3: "Mình làm ra website này để làm 1 blog về cá nhân mình cũng như lắng nghe đóng góp, ý kiến của các bạn về mình để ngày càng hoàn thiện hơn. Mình hy vọng sản phẩm này sẽ giúp ích cho những ai ghé thăm. Tác giả xin chân thành cảm ơn bạn đã dành thời gian ghé qua và đọc lại những dòng chữ này.",
+                hobbyMusic: "Nghe nhạc & Thư giãn",
+                hobbyBadminton: "Đánh cầu lông",
+                hobbyMath: "Khám phá Toán học",
+                hobbyCode: "Lập trình & Phát triển web",
+                back: "Quay lại trang chủ",
+                companionTitle: "Vibe & Music",
+                companionDesc: "Đồng hành cùng giai điệu & code mỗi ngày."
+            },
+            en: {
+                aboutTitle: "About Me",
+                storyP1: "Hi everyone! My name is <strong>Lê Nhựt An</strong>, and you can also call me <strong>lnhwtan</strong>. I was born and raised in Ben Tre (or Vinh Long now). I am in <strong>Class 10T1</strong> at <strong>Ben Tre High School for the Gifted</strong>, and I am part of <strong>K36</strong>.",
+                storyP2: "In my free time, I like listening to music and playing badminton. I often ask my friends to go to the badminton court to play together. After a long day of studying, listening to my favorite song helps me relax and feel better.",
+                storyP3: "I created this website to serve as my personal blog and to listen to your feedback and opinions so I can improve day by day. I hope this product will be helpful to anyone who visits. The author sincerely thanks you for taking the time to drop by and read these words.",
+                hobbyMusic: "Music & Relaxation",
+                hobbyBadminton: "Playing Badminton",
+                hobbyMath: "Exploring Mathematics",
+                hobbyCode: "Coding & Web Dev",
+                back: "Back to Home",
+                companionTitle: "Vibe & Music",
+                companionDesc: "Companion for melodies & daily coding."
+            },
+            ja: {
+                aboutTitle: "自己紹介",
+                storyP1: "皆さんこんにちは！私の名前は<strong>レ・ニュット・アン</strong>（Lê Nhựt An）、別名 <strong>lnhwtan</strong> です。ベンチェ（現在はビンロン）で生まれ育ちました。ベンチェ専門高校の<strong>10T1クラス（K36）</strong>に在籍しています。",
+                storyP2: "暇なときは音楽を聴いたり、バドミントンをしたりするのが好きです。よく友達を誘ってコートに行き一緒にプレイしています。一日の勉強のあと、お気に入りの曲を聴くことでリフレッシュできます。",
+                storyP3: "このウェブサイトは、私の個人的なブログとして、また日々自分を成長させるために皆さんからのご意見やフィードバックを聞くために作りました。訪れてくれた方々にとってこのサイトが役立つことを願っています。お立ち寄りいただき、これらの言葉を読んでくださったことに心から感謝いたします。",
+                hobbyMusic: "音楽鑑賞 ＆ リラックス",
+                hobbyBadminton: "バドミントン",
+                hobbyMath: "数学の探求",
+                hobbyCode: "プログラミング ＆ 開発",
+                back: "ホームに戻る",
+                companionTitle: "Vibe & Music",
+                companionDesc: "メロディーとコードの素晴らしい相棒。"
+            }
+        };
+        let currentLang = localStorage.getItem('language') || 'vi';
+        function setLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('language', lang);
+            const t = translations[lang] || translations['vi'];
+            document.getElementById('txt-about-title').innerText = t.aboutTitle;
+            document.getElementById('story-p1').innerHTML = t.storyP1;
+            document.getElementById('story-p2').innerHTML = t.storyP2;
+            document.getElementById('story-p3').innerHTML = t.storyP3;
+            document.getElementById('hobby-music').innerText = t.hobbyMusic;
+            document.getElementById('hobby-badminton').innerText = t.hobbyBadminton;
+            document.getElementById('hobby-math').innerText = t.hobbyMath;
+            document.getElementById('hobby-code').innerText = t.hobbyCode;
+            document.getElementById('txt-back').innerText = t.back;
+            document.getElementById('companion-title').innerText = t.companionTitle;
+            document.getElementById('companion-desc').innerText = t.companionDesc;
+        }
+        const customLangDropdown = document.getElementById('customLangDropdown');
+        const currentLangText = document.getElementById('currentLangText');
+        const dropdownItems = document.querySelectorAll('.dropdown-item');
+        setLanguage(currentLang);
+        currentLangText.textContent = currentLang === 'vi' ? 'VN' : (currentLang === 'en' ? 'ENG' : 'JP');
+        dropdownItems.forEach(item => {
+            if (item.getAttribute('data-value') === currentLang) {
+                item.classList.add('selected');
+            } else {
+                item.classList.remove('selected');
+            }
+        });
+        customLangDropdown.addEventListener('click', (e) => {
+            e.stopPropagation();
+            customLangDropdown.classList.toggle('active');
+        });
+        window.addEventListener('click', () => {
+            customLangDropdown.classList.remove('active');
+        });
+        dropdownItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const lang = item.getAttribute('data-value');
+                const text = item.textContent;
+                currentLangText.textContent = text;
+                setLanguage(lang);
+                dropdownItems.forEach(i => i.classList.remove('selected'));
+                item.classList.add('selected');
+                customLangDropdown.classList.remove('active');
+            });
+        });
+        const themeToggleBtn = document.getElementById('themeToggleBtn');
+        const themeIcon = document.getElementById('themeIcon');
+        const htmlElement = document.documentElement;
+        function updateThemeIcon(theme) {
+            if (theme === 'light') {
+                themeIcon.className = "fa-solid fa-sun";
+                themeIcon.style.color = "#f59e0b";
+            } else {
+                themeIcon.className = "fa-solid fa-moon";
+                themeIcon.style.color = "var(--text-main)";
+            }
+        }
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        htmlElement.setAttribute('data-theme', savedTheme);
+        updateThemeIcon(savedTheme);
+        themeToggleBtn.addEventListener('click', () => {
+            const currentTheme = htmlElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            htmlElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        });
+        function updateDateTime() {
+            const now = new Date();
+            const day = String(now.getDate()).padStart(2, '0');
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const year = now.getFullYear();
+            document.getElementById('dateText').textContent = `${day}/${month}/${year}`;
+            let hours = now.getHours();
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12;
+            const formattedHours = String(hours).padStart(2, '0');
+            document.getElementById('timeText').textContent = `${formattedHours}:${minutes}:${seconds} ${ampm}`;
+        }
+        setInterval(updateDateTime, 1000);
+        updateDateTime();
+        if ('getBattery' in navigator) {
+            navigator.getBattery().then(function(battery) {
+                const batteryLevelText = document.getElementById('batteryLevelText');
+                const batteryIcon = document.getElementById('batteryIcon');
+                function updateBatteryInfo() {
+                    const level = Math.round(battery.level * 100);
+                    batteryLevelText.textContent = level + '%';
+                    if (battery.charging) {
+                        batteryIcon.className = "fa-solid fa-bolt";
+                        batteryIcon.style.color = "#fde047";
+                    } else {
+                        batteryIcon.style.color = "var(--accent)";
+                        if (level >= 80) batteryIcon.className = "fa-solid fa-battery-full";
+                        else if (level >= 50) batteryIcon.className = "fa-solid fa-battery-three-quarters";
+                        else if (level >= 25) batteryIcon.className = "fa-solid fa-battery-half";
+                        else batteryIcon.className = "fa-solid fa-battery-quarter";
+                    }
+                }
+                updateBatteryInfo();
+                battery.addEventListener('levelchange', updateBatteryInfo);
+                battery.addEventListener('chargingchange', updateBatteryInfo);
+            });
+        } else {
+            document.getElementById('batteryIndicator').style.display = 'none';
+        }
+             const cursorDot = document.createElement('div');
+      cursorDot.className = 'cursor-dot';
+      const cursorOutline = document.createElement('div');
+      cursorOutline.className = 'cursor-outline';
+      document.body.appendChild(cursorDot);
+      document.body.appendChild(cursorOutline);
+      let mouseX = 0, mouseY = 0;
+      let outlineX = 0, outlineY = 0;
+      window.addEventListener('mousemove', (e) => {
+          mouseX = e.clientX;
+          mouseY = e.clientY;
+          cursorDot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
+      });
+      function animateCursor() {
+          outlineX += (mouseX - outlineX) * 0.2;
+          outlineY += (mouseY - outlineY) * 0.2;
+          cursorOutline.style.transform = `translate(${outlineX}px, ${outlineY}px) translate(-50%, -50%)`;
+          requestAnimationFrame(animateCursor);
+      }
+      animateCursor();
+      const interactiveElements = document.querySelectorAll('a, button, .btn, .tech-tag, .feature-card, .project-card-custom');
+      interactiveElements.forEach(el => {
+          el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+          el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+      });
+    </script>
+</body>
+</html>

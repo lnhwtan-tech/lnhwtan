@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact & Vault</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        :root {
+            --accent: #38bdf8;
+            --accent-secondary: #818cf8;
+            --accent-gradient: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+            --accent-glow: rgba(56, 189, 248, 0.35);
+            --bg-color: #07090e;
+            --card-bg: rgba(13, 18, 30, 0.7);
+            --text-main: #f8fafc;
+            --text-secondary: #94a3b8;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-color-focus: rgba(56, 189, 248, 0.5);
+        }
+        [data-theme="light"] {
+            --bg-color: #f8fafc;
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --text-main: #0f172a;
+            --text-secondary: #475569;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --border-color-focus: rgba(56, 189, 248, 0.6);
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(56, 189, 248, 0.06) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(129, 140, 248, 0.06) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, var(--bg-color) 0%, transparent 100%);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(7, 9, 14, 0.6);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-bottom: 1px solid var(--border-color);
+        }
+        [data-theme="light"] header {
+            background: rgba(248, 250, 252, 0.75);
+        }
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--text-main);
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+        .logo span {
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .nav-right-info {
+            display: flex;
+            align-items: center;
+        }
+        .system-widget-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .sys-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            padding: 6px 12px;
+            border-radius: 14px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--text-main);
+            backdrop-filter: blur(12px);
+            transition: all 0.3s ease;
+        }
+        [data-theme="light"] .sys-badge {
+            background: rgba(0, 0, 0, 0.03);
+        }
+        .sys-badge:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(56, 189, 248, 0.3);
+            transform: translateY(-1px);
+        }
+        [data-theme="light"] .sys-badge:hover {
+            background: rgba(0, 0, 0, 0.06);
+        }
+        .sys-badge.battery-box i { color: var(--accent); }
+        .sys-badge.date-box i { color: #f43f5e; }
+        .sys-badge.time-box i { color: #fbbf24; }
+        .custom-dropdown {
+            position: relative;
+            cursor: pointer;
+            user-select: none;
+        }
+        .dropdown-selected {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            display: none;
+            flex-direction: column;
+            z-index: 100;
+            min-width: 70px;
+            backdrop-filter: blur(15px);
+        }
+        [data-theme="light"] .dropdown-menu {
+            background: rgba(255, 255, 255, 0.95);
+        }
+        .custom-dropdown.active .dropdown-menu {
+            display: flex;
+        }
+        .dropdown-item {
+            padding: 8px 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+        .dropdown-item:hover, .dropdown-item.selected {
+            background: var(--accent);
+            color: #07090e;
+        }
+        .theme-toggle-btn {
+            background: none;
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            padding: 6px 10px;
+            border-radius: 14px;
+            font-size: 0.8rem;
+            color: var(--text-main);
+            transition: all 0.3s ease;
+        }
+        @media (max-width: 1024px) {
+            .system-widget-container { display: none; }
+        }
+        main {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 8rem 2rem 4rem;
+        }
+        .contact-wrapper {
+            width: 100%;
+            max-width: 960px;
+            display: grid;
+            grid-template-columns: 1fr 1.35fr;
+            gap: 28px;
+            animation: cardPopIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .contact-info-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2.5rem 2rem;
+            backdrop-filter: blur(25px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3),
+                        inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+        .contact-info-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--accent-gradient);
+        }
+        .contact-info-card h2 {
+            font-size: 1.7rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+        .contact-info-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 2.5rem;
+        }
+        .info-items {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            color: var(--text-main);
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: all 0.25s ease;
+        }
+        .info-item i {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: rgba(56, 189, 248, 0.06);
+            border: 1px solid rgba(56, 189, 248, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+            flex-shrink: 0;
+            font-size: 0.95rem;
+            transition: all 0.25s ease;
+        }
+        .info-item:hover i {
+            background: var(--accent);
+            color: #07090e;
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+        .info-item:hover {
+            color: var(--accent);
+        }
+        .contact-form-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2.5rem;
+            backdrop-filter: blur(25px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3),
+                        inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+        .contact-form-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--accent-gradient);
+        }
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            letter-spacing: 0.3px;
+        }
+        .form-control {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 13px 16px;
+            color: var(--text-main);
+            font-size: 0.95rem;
+            transition: all 0.25s ease;
+            outline: none;
+        }
+        [data-theme="light"] .form-control {
+            background: rgba(0, 0, 0, 0.02);
+        }
+        .form-control::placeholder {
+            color: rgba(148, 163, 184, 0.4);
+        }
+        .form-control:focus {
+            border-color: var(--border-color-focus);
+            background: rgba(56, 189, 248, 0.03);
+            box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.1);
+        }
+        textarea.form-control {
+            resize: vertical;
+            min-height: 130px;
+        }
+        .submit-btn {
+            width: 100%;
+            background: var(--accent-gradient);
+            border: none;
+            border-radius: 12px;
+            padding: 14px;
+            color: #07090e;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 20px var(--accent-glow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 0.5rem;
+        }
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(56, 189, 248, 0.5);
+            opacity: 0.95;
+        }
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        .form-message {
+            margin-top: 1rem;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        .form-message.success {
+            background: rgba(52, 211, 153, 0.1);
+            border: 1px solid rgba(52, 211, 153, 0.25);
+            color: #34d399;
+        }
+        .form-message.error {
+            background: rgba(248, 113, 113, 0.1);
+            border: 1px solid rgba(248, 113, 113, 0.25);
+            color: #f87171;
+        }
+        .back-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            transition: color 0.2s ease;
+        }
+        .back-home:hover {
+            color: var(--accent);
+        }
+        @keyframes cardPopIn {
+            0% { opacity: 0; transform: scale(0.95) translateY(15px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        footer {
+            position: relative;
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            background: rgba(7, 9, 14, 0.4);
+            backdrop-filter: blur(20px);
+        }
+        [data-theme="light"] footer {
+            background: rgba(248, 250, 252, 0.75);
+        }
+        @media (max-width: 768px) {
+            .contact-wrapper {
+                grid-template-columns: 1fr;
+            }
+            main {
+                padding: 6rem 1rem 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo"><span>lnhwtan</span></a>
+            <div class="nav-right-info">
+                <div class="system-widget-container">
+                    <div class="sys-badge battery-box" id="batteryIndicator" title="Trạng thái pin thiết bị">
+                        <i class="fa-solid fa-battery-half" id="batteryIcon"></i>
+                        <span id="batteryLevelText">--%</span>
+                    </div>
+                    <div class="sys-badge date-box" title="Ngày tháng năm hiện tại">
+                        <i class="fa-regular fa-calendar-days"></i>
+                        <span id="dateText">--/--/----</span>
+                    </div>
+                    <div class="sys-badge time-box" title="Thời gian hệ thống">
+                        <i class="fa-regular fa-clock"></i>
+                        <span id="timeText">--:--:-- --</span>
+                    </div>
+                    <div class="sys-badge custom-dropdown" id="customLangDropdown" title="Chọn ngôn ngữ">
+                        <i class="fa-solid fa-globe" style="color: var(--accent);"></i>
+                        <div class="dropdown-selected" id="dropdownSelected">
+                            <span id="currentLangText">VN</span>
+                            <i class="fa-solid fa-chevron-down" style="font-size: 0.65rem;"></i>
+                        </div>
+                        <div class="dropdown-menu" id="dropdownMenu">
+                            <div class="dropdown-item selected" data-value="vi">VN</div>
+                            <div class="dropdown-item" data-value="en">ENG</div>
+                            <div class="dropdown-item" data-value="ja">JP</div>
+                        </div>
+                    </div>
+                    <button class="sys-badge theme-toggle-btn" id="themeToggleBtn" title="Chuyển giao diện Sáng/Tối">
+                        <i class="fa-solid fa-moon" id="themeIcon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main>
+        <div class="contact-wrapper">
+            <div class="contact-info-card">
+                <div>
+                    <h2 id="txt-title">Liên hệ</h2>
+                    <p id="txt-desc">Hãy kết nối với mình qua các thông tin bên dưới hoặc gửi tin nhắn trực tiếp qua biểu mẫu.</p>
+                    <div class="info-items">
+                        <a href="mailto:lnhwtan@gmail.com" class="info-item">
+                            <i class="fa-solid fa-envelope"></i>
+                            <span>lnhwtan@gmail.com</span>
+                        </a>
+                        <a href="https://github.com/lnhwtan-tech" target="_blank" class="info-item">
+                            <i class="fa-brands fa-github"></i>
+                            <span>github.com/lnhwtan-tech</span>
+                        </a>
+                        <a href="https://maps.google.com/?q=Ben+Tre,+Vietnam" target="_blank" class="info-item">
+                            <i class="fa-solid fa-location-dot"></i>
+                            <span id="txt-location">Bến Tre, Việt Nam</span>
+                        </a>
+                    </div>
+                </div>
+                <a href="index.html" class="back-home">
+                    <i class="fa-solid fa-arrow-left"></i> <span id="txt-back">Quay lại trang chủ</span>
+                </a>
+            </div>
+            <div class="contact-form-card">
+                <form id="contactForm" onsubmit="handleContactSubmit(event)">
+                    <div class="form-group">
+                        <label id="lbl-name" for="name">Họ và tên</label>
+                        <input type="text" id="name" class="form-control" placeholder="Nhập họ tên của bạn..." required>
+                    </div>
+                    <div class="form-group">
+                        <label id="lbl-email" for="email">Email</label>
+                        <input type="email" id="email" class="form-control" placeholder="Nhập địa chỉ email..." required>
+                    </div>
+                    <div class="form-group">
+                        <label id="lbl-message" for="message">Nội dung tin nhắn</label>
+                        <textarea id="message" class="form-control" placeholder="Nhập nội dung bạn muốn trao đổi..." required></textarea>
+                    </div>
+                    <button type="submit" id="submitBtn" class="submit-btn">
+                        <i class="fa-solid fa-paper-plane"></i> <span id="btn-submit">Gửi tin nhắn</span>
+                    </button>
+                    <div id="formMessage" class="form-message"></div>
+                </form>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2026 Lê Nhựt An. All rights reserved.</p>
+    </footer>
+    <script>
+        const SUPABASE_URL = 'https://ohgzebkvyykrxmrrzavk.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9oZ3plYmt2eXlrcnhtcnJ6YXZrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk4MTE3NDEsImV4cCI6MjEwNTM4Nzc0MX0.SvKrIFqidm9rdN_AZXgDPg4v44MPCPVkz8g83KDg2Yc';
+        const { createClient } = supabase;
+        const _supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const translations = {
+            vi: {
+                title: "Liên hệ",
+                desc: "Hãy kết nối với mình qua các thông tin bên dưới hoặc gửi tin nhắn trực tiếp qua biểu mẫu.",
+                location: "Bến Tre, Việt Nam",
+                back: "Quay lại trang chủ",
+                lblName: "Họ và tên",
+                lblEmail: "Email",
+                lblMessage: "Nội dung tin nhắn",
+                btnSubmit: "Gửi tin nhắn",
+                successMsg: "Tin nhắn của bạn đã được gửi thành công!",
+                errorMsg: "Lỗi khi gửi tin nhắn: "
+            },
+            en: {
+                title: "Get in Touch",
+                desc: "Feel free to reach out via the info below or send me a direct message using the form.",
+                location: "Ben Tre, Vietnam",
+                back: "Back to Home",
+                lblName: "Full Name",
+                lblEmail: "Email Address",
+                lblMessage: "Your Message",
+                btnSubmit: "Send Message",
+                successMsg: "Your message has been sent successfully!",
+                errorMsg: "Error sending message: "
+            },
+            ja: {
+                title: "お問い合わせ",
+                desc: "以下の情報からご連絡いただくか、フォームから直接メッセージをお送りください。",
+                location: "ベトナム・ベンチェ",
+                back: "ホームに戻る",
+                lblName: "お名前",
+                lblEmail: "メールアドレス",
+                lblMessage: "メッセージ内容",
+                btnSubmit: "送信する",
+                successMsg: "メッセージが正常に送信されました！",
+                errorMsg: "メッセージの送信中にエラーが発生しました: "
+            }
+        };
+        let currentLang = localStorage.getItem('language') || 'vi';
+        function setLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('language', lang);
+            const t = translations[lang] || translations['vi'];
+            document.getElementById('txt-title').innerText = t.title;
+            document.getElementById('txt-desc').innerText = t.desc;
+            document.getElementById('txt-location').innerText = t.location;
+            document.getElementById('txt-back').innerText = t.back;
+            document.getElementById('lbl-name').innerText = t.lblName;
+            document.getElementById('lbl-email').innerText = t.lblEmail;
+            document.getElementById('lbl-message').innerText = t.lblMessage;
+            document.getElementById('btn-submit').innerText = t.btnSubmit;
+        }
+        const customLangDropdown = document.getElementById('customLangDropdown');
+        const currentLangText = document.getElementById('currentLangText');
+        const dropdownItems = document.querySelectorAll('.dropdown-item');
+        setLanguage(currentLang);
+        currentLangText.textContent = currentLang === 'vi' ? 'VN' : (currentLang === 'en' ? 'ENG' : 'JP');
+        dropdownItems.forEach(item => {
+            if (item.getAttribute('data-value') === currentLang) {
+                item.classList.add('selected');
+            } else {
+                item.classList.remove('selected');
+            }
+        });
+        customLangDropdown.addEventListener('click', (e) => {
+            e.stopPropagation();
+            customLangDropdown.classList.toggle('active');
+        });
+        window.addEventListener('click', () => {
+            customLangDropdown.classList.remove('active');
+        });
+        dropdownItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const lang = item.getAttribute('data-value');
+                const text = item.textContent;
+                currentLangText.textContent = text;
+                setLanguage(lang);
+                dropdownItems.forEach(i => i.classList.remove('selected'));
+                item.classList.add('selected');
+                customLangDropdown.classList.remove('active');
+            });
+        });
+        const themeToggleBtn = document.getElementById('themeToggleBtn');
+        const themeIcon = document.getElementById('themeIcon');
+        const htmlElement = document.documentElement;
+        function updateThemeIcon(theme) {
+            if (theme === 'light') {
+                themeIcon.className = "fa-solid fa-sun";
+                themeIcon.style.color = "#f59e0b";
+            } else {
+                themeIcon.className = "fa-solid fa-moon";
+                themeIcon.style.color = "var(--text-main)";
+            }
+        }
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        htmlElement.setAttribute('data-theme', savedTheme);
+        updateThemeIcon(savedTheme);
+        themeToggleBtn.addEventListener('click', () => {
+            const currentTheme = htmlElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            htmlElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        });
+        async function handleContactSubmit(event) {
+            event.preventDefault();
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+            const submitBtn = document.getElementById('submitBtn');
+            const formMessage = document.getElementById('formMessage');
+            const t = translations[currentLang] || translations['vi'];
+            submitBtn.disabled = true;
+            formMessage.style.display = 'none';
+            try {
+                const { data, error } = await _supabase
+                    .from('contacts')
+                    .insert([{ name: name, email: email, message: message }]);
+                if (error) throw error;
+                formMessage.textContent = t.successMsg;
+                formMessage.className = 'form-message success';
+                formMessage.style.display = 'block';
+                document.getElementById('contactForm').reset();
+            } catch (error) {
+                formMessage.textContent = t.errorMsg + error.message;
+                formMessage.className = 'form-message error';
+                formMessage.style.display = 'block';
+            } finally {
+                submitBtn.disabled = false;
+            }
+        }
+        const cursorDot = document.createElement('div');
+        cursorDot.className = 'cursor-dot';
+        const cursorOutline = document.createElement('div');
+        cursorOutline.className = 'cursor-outline';
+        document.body.appendChild(cursorDot);
+        document.body.appendChild(cursorOutline);
+        let mouseX = 0, mouseY = 0;
+        let outlineX = 0, outlineY = 0;
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            cursorDot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
+        });
+        function animateCursor() {
+            outlineX += (mouseX - outlineX) * 0.2;
+            outlineY += (mouseY - outlineY) * 0.2;
+            cursorOutline.style.transform = `translate(${outlineX}px, ${outlineY}px) translate(-50%, -50%)`;
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+        function updateDateTime() {
+            const now = new Date();
+            const day = String(now.getDate()).padStart(2, '0');
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const year = now.getFullYear();
+            document.getElementById('dateText').textContent = `${day}/${month}/${year}`;
+            let hours = now.getHours();
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12;
+            const formattedHours = String(hours).padStart(2, '0');
+            document.getElementById('timeText').textContent = `${formattedHours}:${minutes}:${seconds} ${ampm}`;
+        }
+        setInterval(updateDateTime, 1000);
+        updateDateTime();
+        if ('getBattery' in navigator) {
+            navigator.getBattery().then(function(battery) {
+                const batteryLevelText = document.getElementById('batteryLevelText');
+                const batteryIcon = document.getElementById('batteryIcon');
+                function updateBatteryInfo() {
+                    const level = Math.round(battery.level * 100);
+                    batteryLevelText.textContent = level + '%';
+                    if (battery.charging) {
+                        batteryIcon.className = "fa-solid fa-bolt";
+                        batteryIcon.style.color = "#fde047";
+                    } else {
+                        batteryIcon.style.color = "var(--accent)";
+                        if (level >= 80) batteryIcon.className = "fa-solid fa-battery-full";
+                        else if (level >= 50) batteryIcon.className = "fa-solid fa-battery-three-quarters";
+                        else if (level >= 25) batteryIcon.className = "fa-solid fa-battery-half";
+                        else batteryIcon.className = "fa-solid fa-battery-quarter";
+                    }
+                }
+                updateBatteryInfo();
+                battery.addEventListener('levelchange', updateBatteryInfo);
+                battery.addEventListener('chargingchange', updateBatteryInfo);
+            });
+        } else {
+            document.getElementById('batteryIndicator').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
