@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quy Trình Tính Toán Máy Tính & Nhị Phân - lnhwtan</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="custom-cursor">
+        <div class="cursor-dot" id="cursor-dot"></div>
+        <div class="cursor-outline" id="cursor-outline"></div>
+    </div>
+    <div class="dynamic-island" id="dynamicIsland">
+        <div class="island-collapsed">
+            <div class="pulse-icon"></div>
+            <span class="island-text">lnhwtan &bull; Menu</span>
+        </div>
+        <div class="island-expanded">
+            <div class="island-nav-links">
+                <a href="index.html">Trang chủ</a>
+                <a href="projects.html" class="active">Dự án</a>
+                <a href="posts.html">Bài viết</a>
+                <a href="resources.html">Tài nguyên</a>
+                <a href="contact.html">Liên hệ</a>
+            </div>
+        </div>
+    </div>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo"><span>lnhwtan</span></a>
+            <nav class="nav-links" id="navLinks">
+            </nav>
+            <div class="nav-right-info">
+                <div class="system-widget-container">
+                    <div class="sys-badge battery-box"><i class="fa-solid fa-battery-half"></i> <span id="batteryLevelText">--%</span></div>
+                    <div class="sys-badge date-box"><i class="fa-regular fa-calendar-days"></i> <span id="dateText">--/--/----</span></div>
+                    <div class="sys-badge time-box"><i class="fa-regular fa-clock"></i> <span id="timeText">--:--:-- --</span></div>
+                </div>
+                <button class="theme-toggle-btn" id="themeToggleBtn"><i class="fa-solid fa-moon" id="themeIcon"></i></button>
+                <div class="menu-btn" id="menuBtn"><i class="fa-solid fa-bars"></i></div>
+            </div>
+        </div>
+    </header>
+    <main class="section-container" style="padding-top: 8rem;">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <h1 style="font-size: 2.2rem; font-weight: 800; margin-bottom: 0.5rem;">Quy Trình Tính Toán & <span class="highlight">Hệ Cơ Số Máy Tính</span></h1>
+            <p style="color: var(--text-secondary); font-size: 0.95rem;">Mô phỏng quy trình xử lý, đa hệ cơ số, toán tử Bitwise và biểu diễn số bù 2.</p>
+        </div>
+        <div class="feature-card" style="margin-bottom: 2rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 1.2rem;">
+                <div style="font-size: 1.1rem; font-weight: 700; display: flex; align-items: center; gap: 10px; color: var(--accent);">
+                    <i class="fa-solid fa-calculator"></i> Trung Tâm Xử Lý Số Học & Hệ Cơ Số
+                </div>
+                <div style="width: 240px;">
+                    <div class="custom-dropdown" id="modeSelectorDropdown" style="width: 100%; background: var(--badge-bg); border: 1px solid var(--border-color); padding: 8px 14px; border-radius: 10px; justify-content: space-between;">
+                        <span class="dropdown-selected" data-value="pipeline">Mô phỏng 4 bước (+, -, *)</span>
+                        <i class="fa-solid fa-chevron-down" style="color: var(--text-secondary);"></i>
+                        <div class="dropdown-menu" style="width: 100%; right: auto; left: 0;">
+                            <div class="dropdown-item selected" data-value="pipeline">Mô phỏng 4 bước (+, -, *)</div>
+                            <div class="dropdown-item" data-value="convert">Quy đổi đa hệ cơ số (2 chiều)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="modePipelineSection">
+                <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.2rem;">Nhập trực tiếp số Thập phân hoặc Nhị phân để quan sát quy trình phần cứng thực hiện phép tính.</p>
+                <div style="display: grid; grid-template-columns: 1fr 140px 1fr; gap: 15px; align-items: center; margin-bottom: 1.5rem;">
+                    <div>
+                        <label style="display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px;">Số thứ nhất (<sub>10</sub> hoặc <sub>2</sub>)</label>
+                        <input type="text" id="numA" value="13" oninput="runCalculatorPipeline()" style="width: 100%; background: var(--badge-bg); border: 1px solid var(--border-color); padding: 10px 14px; border-radius: 10px; color: var(--text-primary); font-size: 0.95rem; outline: none;">
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px;">Phép tính</label>
+                        <div class="custom-dropdown" id="operatorDropdown" style="width: 100%; background: var(--badge-bg); border: 1px solid var(--border-color); padding: 10px 14px; border-radius: 10px; justify-content: space-between;">
+                            <span class="dropdown-selected" data-value="+">Cộng (+)</span>
+                            <i class="fa-solid fa-chevron-down" style="color: var(--text-secondary);"></i>
+                            <div class="dropdown-menu" style="width: 100%; right: auto; left: 0;">
+                                <div class="dropdown-item selected" data-value="+">Cộng (+)</div>
+                                <div class="dropdown-item" data-value="-">Trừ (-)</div>
+                                <div class="dropdown-item" data-value="*">Nhân (×)</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px;">Số thứ hai (<sub>10</sub> hoặc <sub>2</sub>)</label>
+                        <input type="text" id="numB" value="5" oninput="runCalculatorPipeline()" style="width: 100%; background: var(--badge-bg); border: 1px solid var(--border-color); padding: 10px 14px; border-radius: 10px; color: var(--text-primary); font-size: 0.95rem; outline: none;">
+                    </div>
+                </div>
+                <div id="pipelineBox" style="display: flex; flex-direction: column; gap: 12px; background: rgba(56, 189, 248, 0.03); border: 1px solid rgba(56, 189, 248, 0.15); border-radius: 14px; padding: 1.5rem;"></div>
+            </div>
+            <div id="modeConvertSection" style="display: none;">
+                <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.2rem;">Nhập giá trị vào bất kỳ ô nào bên dưới, hệ thống sẽ tự động đồng bộ 2 chiều sang các hệ cơ số còn lại.</p>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px;">
+                    <div>
+                        <label style="display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px;">Thập phân (Decimal - <sub>10</sub>)</label>
+                        <input type="text" id="convDec" placeholder="Ví dụ: 255" oninput="convertMultiBase('dec')" style="width: 100%; background: var(--badge-bg); border: 1px solid var(--border-color); padding: 10px 14px; border-radius: 10px; color: var(--text-primary); font-size: 0.95rem; outline: none;">
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px;">Nhị phân (Binary - <sub>2</sub>)</label>
+                        <input type="text" id="convBin" placeholder="Ví dụ: 11111111" oninput="convertMultiBase('bin')" style="width: 100%; background: var(--badge-bg); border: 1px solid var(--border-color); padding: 10px 14px; border-radius: 10px; color: var(--text-primary); font-size: 0.95rem; outline: none;">
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px;">Bát phân (Octal - <sub>8</sub>)</label>
+                        <input type="text" id="convOct" placeholder="Ví dụ: 377" oninput="convertMultiBase('oct')" style="width: 100%; background: var(--badge-bg); border: 1px solid var(--border-color); padding: 10px 14px; border-radius: 10px; color: var(--text-primary); font-size: 0.95rem; outline: none;">
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px;">Thập lục phân (Hex - <sub>16</sub>)</label>
+                        <input type="text" id="convHex" placeholder="Ví dụ: FF" oninput="convertMultiBase('hex')" style="width: 100%; background: var(--badge-bg); border: 1px solid var(--border-color); padding: 10px 14px; border-radius: 10px; color: var(--text-primary); font-size: 0.95rem; outline: none;">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="feature-card" style="margin-bottom: 2rem;">
+            <div style="font-size: 1.1rem; font-weight: 700; margin-bottom: 1.2rem; display: flex; align-items: center; gap: 10px; color: var(--accent);">
+                <i class="fa-solid fa-network-wired"></i> Mô Phỏng Phép Toán Bitwise (Tầng Phần Cứng CPU)
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.2rem;">Khám phá cách CPU thực hiện các thao tác logic trực tiếp trên từng bit dữ liệu.</p>
+            <div style="display: grid; grid-template-columns: 1fr 160px 1fr; gap: 15px; align-items: center; margin-bottom: 1.2rem;">
+                <div>
+                    <label style="display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px;">Giá trị A (Hỗ trợ <sub>10</sub> hoặc <sub>2</sub>)</label>
+                    <input type="text" id="bitA" value="12" oninput="runBitwise()" style="width: 100%; background: var(--badge-bg); border: 1px solid var(--border-color); padding: 10px 14px; border-radius: 10px; color: var(--text-primary); font-size: 0.95rem; outline: none;">
+                </div>
+                <div>
+                    <label style="display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px;">Phép Bitwise</label>
+                    <div class="custom-dropdown" id="bitOpDropdown" style="width: 100%; background: var(--badge-bg); border: 1px solid var(--border-color); padding: 10px 14px; border-radius: 10px; justify-content: space-between;">
+                        <span class="dropdown-selected" data-value="AND">AND (&amp;)</span>
+                        <i class="fa-solid fa-chevron-down" style="color: var(--text-secondary);"></i>
+                        <div class="dropdown-menu" style="width: 100%; right: auto; left: 0;">
+                            <div class="dropdown-item selected" data-value="AND">AND (&amp;)</div>
+                            <div class="dropdown-item" data-value="OR">OR (|)</div>
+                            <div class="dropdown-item" data-value="XOR">XOR (^)</div>
+                            <div class="dropdown-item" data-value="SHL">Shift Trái (&lt;&lt;)</div>
+                            <div class="dropdown-item" data-value="SHR">Shift Phải (&gt;&gt;)</div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <label style="display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px;" id="bitBLabel">Giá trị B (Hỗ trợ <sub>10</sub> hoặc <sub>2</sub>)</label>
+                    <input type="text" id="bitB" value="10" oninput="runBitwise()" style="width: 100%; background: var(--badge-bg); border: 1px solid var(--border-color); padding: 10px 14px; border-radius: 10px; color: var(--text-primary); font-size: 0.95rem; outline: none;">
+                </div>
+            </div>
+            <div id="bitwiseBox" style="background: rgba(56, 189, 248, 0.03); border: 1px solid rgba(56, 189, 248, 0.15); border-radius: 14px; padding: 1.5rem; font-family: monospace; font-size: 0.9rem; line-height: 1.6;"></div>
+        </div>
+        <div class="feature-card" style="margin-bottom: 2rem;">
+            <div style="font-size: 1.1rem; font-weight: 700; margin-bottom: 1.2rem; display: flex; align-items: center; gap: 10px; color: var(--accent);">
+                <i class="fa-solid fa-plus-minus"></i> Mô Phỏng Biểu Diễn Số Âm Bằng Bù 2 (8-bit Two's Complement)
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.2rem;">Cách máy tính lưu trữ số âm bằng cách đảo bit (Bù 1) rồi cộng thêm 1 đơn vị.</p>
+            <div style="max-width: 300px; margin-bottom: 1.2rem;">
+                <label style="display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px;">Nhập số nguyên (-128 đến 127)</label>
+                <input type="number" id="twosInput" value="-5" min="-128" max="127" oninput="runTwosComplement()" style="width: 100%; background: var(--badge-bg); border: 1px solid var(--border-color); padding: 10px 14px; border-radius: 10px; color: var(--text-primary); font-size: 0.95rem; outline: none;">
+            </div>
+            <div id="twosBox" style="background: rgba(56, 189, 248, 0.03); border: 1px solid rgba(56, 189, 248, 0.15); border-radius: 14px; padding: 1.5rem; font-family: monospace; font-size: 0.9rem; line-height: 1.6;"></div>
+        </div>
+        <div class="feature-card" style="margin-bottom: 2rem;">
+            <div style="font-size: 1.1rem; font-weight: 700; margin-bottom: 1.2rem; display: flex; align-items: center; gap: 10px; color: var(--accent);">
+                <i class="fa-solid fa-gamepad"></i> Mini Quiz: Thử Thách Đổi Cơ Số 2 Chiều
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.2rem;">Kiểm tra phản xạ chuyển đổi qua lại giữa các hệ cơ số với câu hỏi ngẫu nhiên và chấm điểm trực tiếp[cite: 6].</p>
+            <div id="quizContainer" style="background: rgba(56, 189, 248, 0.03); border: 1px solid rgba(56, 189, 248, 0.15); border-radius: 14px; padding: 1.5rem; text-align: center;">
+                <div id="quizQuestion" style="font-size: 1.05rem; font-weight: 700; margin-bottom: 1rem; color: var(--text-primary);">
+                    Nhấn "Bắt đầu thử thách" để chơi!
+                </div>
+                <div id="quizOptions" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 1.2rem;"></div>
+                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed var(--border-color); padding-top: 1rem;">
+                    <span id="quizScore" style="font-size: 0.9rem; font-weight: 600; color: var(--text-secondary);">Điểm số: 0 / 0</span>
+                    <button id="quizBtn" onclick="nextQuizQuestion()" class="btn" style="padding: 8px 18px; font-size: 0.85rem; background: var(--accent); color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">Bắt đầu thử thách</button>
+                </div>
+            </div>
+        </div>
+        <div class="feature-card" style="margin-bottom: 2rem;">
+            <div style="font-size: 1.1rem; font-weight: 700; margin-bottom: 1.2rem; display: flex; align-items: center; gap: 10px; color: var(--accent);">
+                <i class="fa-solid fa-book-open-reader"></i> Cẩm Nang Hướng Dẫn Cách Tính (Ký hiệu chuẩn)
+            </div>
+            <div style="margin-bottom: 1.5rem;">
+                <h4 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 0.4rem; color: var(--text-primary);">1. Đổi 2 chiều Thập phân và Nhị phân (<sub>10</sub> &harr; <sub>2</sub>)</h4>
+                <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; padding-left: 1rem; margin-bottom: 0.5rem;">&bull; Thập sang Nhị: Chia liên tục cho 2, lấy phần dư viết ngược từ dưới lên.<br>&bull; Nhị sang Thập: Cộng dồn giá trị tích lũy theo lũy thừa của 2 từ phải sang trái.</p>
+            </div>
+            <div style="margin-bottom: 0;">
+                <h4 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 0.4rem; color: var(--text-primary);">2. Mối liên hệ hệ 8, hệ 16 và hệ 2</h4>
+                <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; padding-left: 1rem; margin-bottom: 0.5rem;">Mỗi chữ số Bát phân tương ứng với nhóm 3 bit nhị phân ($2^3 = 8$), và mỗi chữ số Thập lục phân tương ứng với nhóm 4 bit nhị phân ($2^4 = 16$).</p>
+            </div>
+        </div>
+        <a href="projects.html" class="btn secondary-btn" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; font-size: 0.85rem; font-weight: 600;">
+            <i class="fa-solid fa-arrow-left"></i> Quay lại trang dự án
+        </a>
+    </main>
+    <footer>
+        <div class="footer-container">
+            <div class="footer-col">
+                <h3><span>lnhwtan</span></h3>
+                <p>Học tập, khám phá công nghệ, lập trình và toán học nâng cao.</p>
+                <div class="footer-socials">
+                    <a href="#"><i class="fa-brands fa-github"></i></a>
+                    <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#"><i class="fa-brands fa-discord"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Điều hướng</h4>
+                <ul>
+                    <li><a href="index.html"><i class="fa-solid fa-chevron-right" style="font-size: 10px;"></i> Trang chủ</a></li>
+                    <li><a href="projects.html"><i class="fa-solid fa-chevron-right" style="font-size: 10px;"></i> Dự án</a></li>
+                    <li><a href="posts.html"><i class="fa-solid fa-chevron-right" style="font-size: 10px;"></i> Bài viết</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Thông tin</h4>
+                <p>&copy; 2026 Lê Nhựt An. All rights reserved.</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>Designed & Built with passion by lnhwtan.</p>
+        </div>
+    </footer>
+    <script>
+        const cursorDot = document.getElementById('cursor-dot');
+        const cursorOutline = document.getElementById('cursor-outline');
+        let mouseX = 0, mouseY = 0, outlineX = 0, outlineY = 0;
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX; mouseY = e.clientY;
+            cursorDot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
+        });
+        function animateCursor() {
+            outlineX += (mouseX - outlineX) * 0.2;
+            outlineY += (mouseY - outlineY) * 0.2;
+            cursorOutline.style.transform = `translate(${outlineX}px, ${outlineY}px) translate(-50%, -50%)`;
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+        document.querySelectorAll('a, button, input, select').forEach(el => {
+            el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+            el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+        });
+        const menuBtn = document.getElementById('menuBtn');
+        const navLinks = document.getElementById('navLinks');
+        if (menuBtn) {
+            menuBtn.addEventListener('click', () => {
+                navLinks.classList.toggle('active-menu');
+            });
+        }
+        function parseVal(str) {
+            str = str.trim();
+            if (str === "") return 0;
+            if (/^[01]+$/.test(str) && (str.length > 1 && !str.startsWith('0'))) {
+                return parseInt(str, 2);
+            }
+            let val = Number(str);
+            return isNaN(val) ? 0 : val;
+        }
+        function initCustomDropdowns() {
+            document.querySelectorAll('.custom-dropdown').forEach(dropdown => {
+                const selectedEl = dropdown.querySelector('.dropdown-selected');
+                const menuEl = dropdown.querySelector('.dropdown-menu');
+                dropdown.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    document.querySelectorAll('.custom-dropdown').forEach(d => {
+                        if (d !== dropdown) d.classList.remove('active');
+                    });
+                    dropdown.classList.toggle('active');
+                });
+                menuEl.querySelectorAll('.dropdown-item').forEach(item => {
+                    item.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        menuEl.querySelectorAll('.dropdown-item').forEach(i => i.classList.remove('selected'));
+                        item.classList.add('selected');
+                        selectedEl.textContent = item.textContent;
+                        selectedEl.setAttribute('data-value', item.getAttribute('data-value'));
+                        dropdown.classList.remove('active');
+                        if (dropdown.id === 'operatorDropdown') runCalculatorPipeline();
+                        if (dropdown.id === 'bitOpDropdown') runBitwise();
+                        if (dropdown.id === 'modeSelectorDropdown') {
+                            let val = item.getAttribute('data-value');
+                            let pipelineSec = document.getElementById('modePipelineSection');
+                            let convertSec = document.getElementById('modeConvertSection');
+                            if (val === 'pipeline') {
+                                pipelineSec.style.display = 'block';
+                                convertSec.style.display = 'none';
+                            } else {
+                                pipelineSec.style.display = 'none';
+                                convertSec.style.display = 'block';
+                            }
+                        }
+                    });
+                });
+            });
+            window.addEventListener('click', () => {
+                document.querySelectorAll('.custom-dropdown').forEach(d => d.classList.remove('active'));
+            });
+        }
+        initCustomDropdowns();
+        function runCalculatorPipeline() {
+            let rawA = document.getElementById('numA').value.trim();
+            let rawB = document.getElementById('numB').value.trim();
+            let op = document.querySelector('#operatorDropdown .dropdown-selected').getAttribute('data-value');
+            let isBinA = /^[01]+$/.test(rawA) && rawA.length > 1 && !rawA.startsWith('0');
+            let isBinB = /^[01]+$/.test(rawB) && rawB.length > 1 && !rawB.startsWith('0');
+            let isBothBinary = isBinA && isBinB;
+            function getDecToBinSteps(num) {
+                if (num === 0) return "0<sub>10</sub> = 0<sub>2</sub>";
+                let n = Math.abs(num);
+                let steps = [];
+                let remainders = [];
+                while (n > 0) {
+                    let quo = Math.floor(n / 2);
+                    let rem = n % 2;
+                    steps.push(`${n} &divide; 2 = <strong>${quo}</strong> (dư <span style="color: var(--accent);">${rem}</span>)`);
+                    remainders.push(rem);
+                    n = quo;
+                }
+                let binStr = remainders.slice().reverse().join('');
+                return `
+                    <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px;">
+                        ${steps.join('<br>')}<br>
+                        &rarr; Đọc số dư từ dưới lên: <strong>${binStr}<sub>2</sub></strong>
+                    </div>
+                `;
+            }
+            function getBinToDecSteps(binStr) {
+                let len = binStr.length;
+                let steps = [];
+                let sum = 0;
+                for (let i = 0; i < len; i++) {
+                    let bit = parseInt(binStr[i]);
+                    let exp = len - 1 - i;
+                    let val = bit * Math.pow(2, exp);
+                    steps.push(`<strong>${bit}</strong> &times; 2<sup>${exp}</sup> =${val}`);
+                    sum += val;
+                }
+                return `
+                    <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px;">
+                        Khai triển theo lũy thừa cơ số 2:<br>
+                        ${steps.join(' + ')}<br>
+                        &rarr; Tổng giá trị: <strong>${sum}<sub>10</sub></strong>
+                    </div>
+                `;
+            }
+            let detailA = "";
+            let a = 0;
+            if (isBinA) {
+                a = parseInt(rawA, 2);
+                detailA = `<strong>Đổi nhị phân sang thập phân:</strong><br>` + getBinToDecSteps(rawA);
+            } else {
+                a = parseInt(rawA) || 0;
+                detailA = `<strong>Chia liên tục cho 2 để lấy số dư:</strong><br>` + getDecToBinSteps(a);
+            }
+            let detailB = "";
+            let b = 0;
+            if (isBinB) {
+                b = parseInt(rawB, 2);
+                detailB = `<strong>Đổi nhị phân sang thập phân:</strong><br>` + getBinToDecSteps(rawB);
+            } else {
+                b = parseInt(rawB) || 0;
+                detailB = `<strong>Chia liên tục cho 2 để lấy số dư:</strong><br>` + getDecToBinSteps(b);
+            }
+            let binA = a >= 0 ? a.toString(2) : "-" + Math.abs(a).toString(2);
+            let binB = b >= 0 ? b.toString(2) : "-" + Math.abs(b).toString(2);
+            let resultDec = 0;
+            if (op === '+') resultDec = a + b;
+            else if (op === '-') resultDec = a - b;
+            else if (op === '*') resultDec = a * b;
+            let binResult = resultDec >= 0 ? resultDec.toString(2) : "-" + Math.abs(resultDec).toString(2);
+            let verticalHtml = "";
+            if (isBothBinary) {
+                let opSymbol = op === '*' ? '&times;' : op;
+                verticalHtml = `
+                    <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 8px;">Quy đổi ra hệ Thập phân để tính cho quen thuộc:</div>
+                    <div style="display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap;">
+                        <div style="background: rgba(0,0,0,0.25); padding: 12px 18px; border-radius: 8px; font-family: monospace; font-size: 1.05rem; line-height: 1.8; min-width: 130px; text-align: right;">
+                            <div>&nbsp;&nbsp;${a}</div>
+                            <div>${opSymbol}&nbsp;${b}</div>
+                            <div style="border-bottom: 2px solid var(--accent); margin: 4px 0;"></div>
+                            <div style="color: #22c55e; font-weight: bold;">&nbsp;&nbsp;${resultDec}</div>
+                        </div>
+                        <div style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; flex: 1; min-width: 220px;">
+                            <strong>Giải thích:</strong><br>
+                            • Số thứ nhất: <code>${rawA}<sub>2</sub></code> bằng <code>${a}</code> trong đời thực.<br>
+                            • Số thứ hai: <code>${rawB}<sub>2</sub></code> bằng <code>${b}</code> trong đời thực.<br>
+                            • Kết quả: <code>${a}${op} ${b} =${resultDec}</code>.
+                        </div>
+                    </div>
+                `;
+            } 
+            else if (a >= 0 && b >= 0 && op === '+') {
+                let maxLen = Math.max(binA.length, binB.length);
+                let pA = binA.padStart(maxLen, '0');
+                let pB = binB.padStart(maxLen, '0');
+                let carry = 0;
+                let stepDetails = [];
+                let resBits = [];
+                for (let i = maxLen - 1; i >= 0; i--) {
+                    let bitA_i = parseInt(pA[i]);
+                    let bitB_i = parseInt(pB[i]);
+                    let sum = bitA_i + bitB_i + carry;
+                    let outBit = sum % 2;
+                    let nextCarry = Math.floor(sum / 2);
+                    let carryText = carry > 0 ? ` + nhớ thêm ${carry}` : ``;
+                    let explanation = `${bitA_i} cộng với ${bitB_i}${carryText} =${sum} &rarr; Ghi lại số <strong>${outBit}</strong>, nhớ sang hàng bên cạnh <strong>${nextCarry}</strong>`;
+                    stepDetails.unshift(`• Cột ${maxLen - i}:${explanation}`);
+                    resBits.unshift(outBit);
+                    carry = nextCarry;
+                }
+                if (carry > 0) {
+                    resBits.unshift(carry);
+                    stepDetails.unshift(`• Cột ngoài cùng: Viết thêm số <strong>${carry}</strong> do còn dư hàng cuối`);
+                }
+                let alignedA = binA.padStart(resBits.length, ' ');
+                let alignedB = binB.padStart(resBits.length, ' ');
+                let alignedRes = resBits.join('');
+                verticalHtml = `
+                    <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 8px;">Cách đặt tính cộng dọc (từ phải qua trái):</div>
+                    <div style="display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap;">
+                        <div style="background: rgba(0,0,0,0.25); padding: 12px 18px; border-radius: 8px; font-family: monospace; font-size: 1.05rem; line-height: 1.8; min-width: 130px; text-align: right;">
+                            <div>&nbsp;&nbsp;${alignedA}</div>
+                            <div>+&nbsp;${alignedB}</div>
+                            <div style="border-bottom: 2px solid var(--accent); margin: 4px 0;"></div>
+                            <div style="color: #22c55e; font-weight: bold;">&nbsp;&nbsp;${alignedRes}</div>
+                        </div>
+                        <div style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; flex: 1; min-width: 220px;">
+                            <strong>Cộng từng cột từ phải sang trái:</strong><br>
+                            ${stepDetails.join('<br>')}
+                        </div>
+                    </div>
+                `;
+            } 
+            else if (a >= 0 && b >= 0 && op === '-') {
+                let maxLen = Math.max(binA.length, binB.length);
+                let pA = binA.padStart(maxLen, '0');
+                let pB = binB.padStart(maxLen, '0');
+                let borrow = 0;
+                let stepDetails = [];
+                let resBits = [];
+                for (let i = maxLen - 1; i >= 0; i--) {
+                    let bitA_i = parseInt(pA[i]);
+                    let bitB_i = parseInt(pB[i]) + borrow;
+                    let explanation = "";
+                    let outBit = 0;
+                    if (bitA_i >= bitB_i) {
+                        outBit = bitA_i - bitB_i;
+                        let borrowNote = borrow > 0 ? ` (sau khi đã trả lại số mượn)` : ``;
+                        explanation = `${bitA_i} trừ ${parseInt(pB[i])}${borrow > 0 ? ' và trừ tiếp 1 đã mượn' : ''} = ${outBit}${borrowNote} &rarr; Viết <strong>${outBit}</strong>, không phải mượn`;
+                        borrow = 0;
+                    } else {
+                        outBit = (bitA_i + 2) - bitB_i;
+                        explanation = `${bitA_i} nhỏ hơn ${parseInt(pB[i])}${borrow > 0 ? ' (đã trừ mượn trước đó)' : ''}, phải mượn 1 từ hàng bên cạnh thành (${bitA_i} + 2) - ${parseInt(pB[i])} = ${outBit} &rarr; Viết <strong>${outBit}</strong>, mượn 1`;
+                        borrow = 1;
+                    }
+                    stepDetails.unshift(`• Cột ${maxLen - i}: ${explanation}`);
+                    resBits.unshift(outBit);
+                }
+                let cleanResBits = [...resBits];
+                while (cleanResBits.length > 1 && cleanResBits[0] === 0) {
+                    cleanResBits.shift();
+                }
+                let alignedA = binA.padStart(resBits.length, ' ');
+                let alignedB = binB.padStart(resBits.length, ' ');
+                let alignedRes = resBits.join('');
+                verticalHtml = `
+                    <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 8px;">Cách đặt tính trừ dọc (từ phải qua trái):</div>
+                    <div style="display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap;">
+                        <div style="background: rgba(0,0,0,0.25); padding: 12px 18px; border-radius: 8px; font-family: monospace; font-size: 1.05rem; line-height: 1.8; min-width: 130px; text-align: right;">
+                            <div>&nbsp;&nbsp;${alignedA}</div>
+                            <div>-&nbsp;${alignedB}</div>
+                            <div style="border-bottom: 2px solid var(--accent); margin: 4px 0;"></div>
+                            <div style="color: #22c55e; font-weight: bold;">&nbsp;&nbsp;${cleanResBits.join('')}</div>
+                        </div>
+                        <div style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; flex: 1; min-width: 220px;">
+                            <strong>Trừ từng cột từ phải sang trái:</strong><br>
+                            ${stepDetails.join('<br>')}
+                        </div>
+                    </div>
+                `;
+            }
+            else if (a >= 0 && b >= 0 && op === '*') {
+                let stepDetails = [];
+                let bBits = b.toString(2).split('');
+                let partialRows = [];
+                let totalLen = binResult.length;
+                for (let i = bBits.length - 1, shift = 0; i >= 0; i--, shift++) {
+                    let multiplierBit = parseInt(bBits[i]);
+                    let val = (multiplierBit === 1) ? binA : "0".repeat(binA.length);
+                    if (multiplierBit === 1) {
+                        stepDetails.push(`• Lấy chữ số <strong>1</strong> ở hàng thứ ${bBits.length - i} nhân với <code>${binA}</code> &rarr; Được dòng tích riêng: <code>${binA}</code>`);
+                    } else {
+                        stepDetails.push(`• Lấy chữ số <strong>0</strong> ở hàng thứ ${bBits.length - i} nhân với <code>${binA}</code> &rarr; Được dòng toàn số 0: <code>${val}</code>`);
+                    }
+                    let rowCells = new Array(totalLen).fill('');
+                    let startCol = totalLen - shift - val.length;
+                    for (let c = 0; c < val.length; c++) {
+                        rowCells[startCol + c] = val[c];
+                    }
+                    partialRows.push(rowCells);
+                }
+                let aCells = new Array(totalLen).fill('');
+                for (let c = 0; c < binA.length; c++) {
+                    aCells[totalLen - binA.length + c] = binA[c];
+                }
+                let bStr = b.toString(2);
+                let bCells = new Array(totalLen).fill('');
+                for (let c = 0; c < bStr.length; c++) {
+                    bCells[totalLen - bStr.length + c] = bStr[c];
+                }
+                let resCells = binResult.split('');
+                let renderRowcells = (cells, isBold = false, color = '') => {
+                    return cells.map(ch => `<td style="width: 24px; height: 28px; text-align: center; vertical-align: middle; ${isBold ? 'font-weight: bold;' : ''} ${color ? 'color:' + color + ';' : ''}">${ch || '&nbsp;'}</td>`).join('');
+                };
+                verticalHtml = `
+                    <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 8px;">Cách đặt tính nhân dọc (chia theo ô ly):</div>
+                    <div style="display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap;">
+                        <div style="background: rgba(0,0,0,0.25); padding: 12px 16px; border-radius: 8px; font-family: monospace; font-size: 1.05rem;">
+                            <table style="border-collapse: collapse; margin-left: auto;">
+                                <tr>${renderRowcells(aCells)}</tr>
+                                <tr>
+                                    <td style="width: 24px; height: 28px; text-align: center; vertical-align: middle;">&times;</td>
+                                    ${bCells.slice(1).map(ch => `<td style="width: 24px; height: 28px; text-align: center; vertical-align: middle;">${ch || '&nbsp;'}</td>`).join('')}
+                                </tr>
+                            </table>
+                            <div style="border-bottom: 2px solid var(--accent); margin: 6px 0;"></div>
+                            <table style="border-collapse: collapse; margin-left: auto;">
+                                ${partialRows.map(row => `<tr>${renderRowcells(row)}</tr>`).join('')}
+                            </table>
+                            <div style="border-bottom: 1px dashed var(--text-secondary); margin: 6px 0;"></div>
+                            <table style="border-collapse: collapse; margin-left: auto;">
+                                <tr>${renderRowcells(resCells, true, '#22c55e')}</tr>
+                            </table>
+                        </div>
+                        <div style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; flex: 1; min-width: 220px;">
+                            <strong>Các bước nhân từng hàng:</strong><br>
+                            ${stepDetails.join('<br>')}<br>
+                            &rarr; Cộng tất cả các dòng tích riêng lại ta được kết quả cuối cùng: <strong>${binResult}<sub>2</sub></strong>
+                        </div>
+                    </div>
+                `;
+            }
+            else {
+                let opSymbol = op === '*' ? '&times;' : op;
+                verticalHtml = `
+                    <div style="font-family: monospace; font-size: 0.95rem; margin: 8px 0;">
+                        <code>${a} ${opSymbol} ${b} = ${resultDec}</code>
+                    </div>
+                `;
+            }
+            let pipelineHTML = `
+                <div style="display: flex; flex-direction: column; gap: 12px; font-size: 0.9rem;">
+                    <div style="border-bottom: 1px dashed var(--border-color); padding-bottom: 10px;">
+                        <strong>Bước 1.1: Phân tích số thứ nhất (${rawA})</strong><br>
+                        ${detailA}
+                    </div>
+                    <div style="border-bottom: 1px dashed var(--border-color); padding-bottom: 10px;">
+                        <strong>Bước 1.2: Phân tích số thứ hai (${rawB})</strong><br>
+                        ${detailB}
+                    </div>
+                    <div style="border-bottom: 1px dashed var(--border-color); padding-bottom: 10px;">
+                        <strong>Bước 2: Thực hiện phép tính (${op})</strong><br>
+                        ${verticalHtml}
+                    </div>
+                    <div style="font-weight: 700; color: var(--accent);">
+                        <strong>Bước 3: Kết quả cuối cùng</strong><br>
+                        &rarr; Hệ Thập phân: <strong>${resultDec}<sub>10</sub></strong><br>
+                        &rarr; Hệ Nhị phân: <strong>${binResult}<sub>2</sub></strong>
+                    </div>
+                </div>
+            `;
+            document.getElementById('pipelineBox').innerHTML = pipelineHTML;
+        }
+        runCalculatorPipeline();
+        function convertMultiBase(source) {
+            let decVal = document.getElementById('convDec');
+            let binVal = document.getElementById('convBin');
+            let octVal = document.getElementById('convOct');
+            let hexVal = document.getElementById('convHex');
+            let num = 0;
+            if (source === 'dec') {
+                if (decVal.value === "") { binVal.value = ""; octVal.value = ""; hexVal.value = ""; return; }
+                num = parseInt(decVal.value);
+            } else if (source === 'bin') {
+                if (binVal.value === "") { decVal.value = ""; octVal.value = ""; hexVal.value = ""; return; }
+                if (!/^[01]+$/.test(binVal.value)) return;
+                num = parseInt(binVal.value, 2);
+            } else if (source === 'oct') {
+                if (octVal.value === "") { decVal.value = ""; binVal.value = ""; hexVal.value = ""; return; }
+                if (!/^[0-7]+$/.test(octVal.value)) return;
+                num = parseInt(octVal.value, 8);
+            } else if (source === 'hex') {
+                if (hexVal.value === "") { decVal.value = ""; binVal.value = ""; octVal.value = ""; return; }
+                if (!/^[0-9a-fA-F]+$/.test(hexVal.value)) return;
+                num = parseInt(hexVal.value, 16);
+            }
+            if (isNaN(num)) return;
+            if (source !== 'dec') decVal.value = num.toString(10);
+            if (source !== 'bin') binVal.value = num.toString(2);
+            if (source !== 'oct') octVal.value = num.toString(8);
+            if (source !== 'hex') hexVal.value = num.toString(16).toUpperCase();
+        }
+        function runBitwise() {
+            let rawA = document.getElementById('bitA').value.trim();
+            let rawB = document.getElementById('bitB').value.trim();
+            let op = document.querySelector('#bitOpDropdown .dropdown-selected').getAttribute('data-value');
+            let a = parseVal(rawA);
+            let b = parseVal(rawB);
+            let bLabel = document.getElementById('bitBLabel');
+            if (op === 'SHL' || op === 'SHR') {
+                bLabel.textContent = "Số bit dịch chuyển";
+                if (b > 31) b = 31;
+            } else {
+                bLabel.textContent = "Giá trị B (Hỗ trợ <sub>10</sub> hoặc <sub>2</sub>)";
+            }
+            let result = 0;
+            if (op === 'AND') result = a & b;
+            else if (op === 'OR') result = a | b;
+            else if (op === 'XOR') result = a ^ b;
+            else if (op === 'SHL') result = a << b;
+            else if (op === 'SHR') result = a >> b;
+            let aBin = (a >>> 0).toString(2).padStart(8, '0');
+            let bBin = (b >>> 0).toString(2).padStart(8, '0');
+            let resBin = (result >>> 0).toString(2).padStart(8, '0');
+            let html = `
+                <div>A (${a}) = <span style="color: var(--accent);">${aBin}₂</span></div>
+                <div>B (${b}) = <span style="color: var(--accent);">${bBin}₂</span></div>
+                <div style="border-top: 1px dashed var(--border-color); margin: 8px 0; padding-top: 8px;">
+                    <strong>Kết quả (${op}):</strong> ${result}<sub>10</sub> = <span style="color: #22c55e;">${resBin}₂</span>
+                </div>
+            `;
+            document.getElementById('bitwiseBox').innerHTML = html;
+        }
+        runBitwise();
+        function runTwosComplement() {
+            let val = parseInt(document.getElementById('twosInput').value) || 0;
+            if (val < -128) val = -128;
+            if (val > 127) val = 127;
+            let unsigned = val < 0 ? val + 256 : val;
+            let bin8 = unsigned.toString(2).padStart(8, '0');
+            let html = `
+                <div>Số thập phân: <strong style="color: var(--accent);">${val}<sub>10</sub></strong></div>
+                <div>Biểu diễn Bù 2 (8-bit): <strong style="color: #22c55e;">${bin8}₂</strong></div>
+                <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 6px;">
+                    &bull; Bit cao nhất (MSB) là <strong>${bin8[0]}</strong> (${bin8[0] === '1' ? 'Số âm' : 'Số dương'}).<br>
+                    &bull; Phạm vi lưu trữ 8-bit bù 2: từ -128 đến 127.
+                </div>
+            `;
+            document.getElementById('twosBox').innerHTML = html;
+        }
+        runTwosComplement();
+        let score = 0;
+        let totalQuestions = 0;
+        let correctAnswer = "";
+        function nextQuizQuestion() {
+            const questionEl = document.getElementById('quizQuestion');
+            const optionsEl = document.getElementById('quizOptions');
+            const scoreEl = document.getElementById('quizScore');
+            const btnEl = document.getElementById('quizBtn');
+            btnEl.textContent = "Câu tiếp theo";
+            optionsEl.innerHTML = "";
+            let bases = [10, 2, 8, 16];
+            let fromBaseIdx = Math.floor(Math.random() * bases.length);
+            let toBaseIdx;
+            do {
+                toBaseIdx = Math.floor(Math.random() * bases.length);
+            } while (fromBaseIdx === toBaseIdx);
+            let fromBase = bases[fromBaseIdx];
+            let toBase = bases[toBaseIdx];
+            let targetNum = Math.floor(Math.random() * 100) + 1;
+            let questionText = "";
+            let fromStr = targetNum.toString(fromBase).toUpperCase();
+            let baseSymbols = { 10: '₁₀', 2: '₂', 8: '<sub>8</sub>', 16: '₁₆' };
+            correctAnswer = targetNum.toString(toBase).toUpperCase();
+            questionText = `Đổi số <strong style="color: var(--accent);">${fromStr}${baseSymbols[fromBase]}</strong> sang hệ ${toBase === 2 ? 'Nhị phân' : toBase === 8 ? 'Bát phân' : toBase === 16 ? 'Thập lục phân' : 'Thập phân'} (${baseSymbols[toBase]})?`;
+            questionEl.innerHTML = questionText;
+            let optionsSet = new Set();
+            optionsSet.add(correctAnswer);
+            while (optionsSet.size < 4) {
+                let offset = Math.floor(Math.random() * 10) - 5;
+                if (offset === 0) offset = 1;
+                let wrongNum = targetNum + offset;
+                if (wrongNum < 1) wrongNum = 1;
+                optionsSet.add(wrongNum.toString(toBase).toUpperCase());
+            }
+            let optionsArray = Array.from(optionsSet).sort(() => Math.random() - 0.5);
+            optionsArray.forEach(opt => {
+                let optBtn = document.createElement('button');
+                optBtn.textContent = opt + baseSymbols[toBase];
+                optBtn.style.cssText = "background: var(--badge-bg); border: 1px solid var(--border-color); padding: 10px; border-radius: 10px; color: var(--text-primary); font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.2s;";
+                optBtn.onclick = function() {
+                    totalQuestions++;
+                    let allBtns = optionsEl.querySelectorAll('button');
+                    allBtns.forEach(b => b.disabled = true);
+                    if (opt === correctAnswer) {
+                        score++;
+                        optBtn.style.background = "rgba(34, 197, 94, 0.2)";
+                        optBtn.style.borderColor = "#22c55e";
+                        optBtn.style.color = "#22c55e";
+                    } else {
+                        optBtn.style.background = "rgba(239, 68, 68, 0.2)";
+                        optBtn.style.borderColor = "#ef4444";
+                        optBtn.style.color = "#ef4444";
+                        allBtns.forEach(b => {
+                            let cleanText = b.textContent.replace(/[₁₂₀₁₆_8]/g, '');
+                            if (cleanText === correctAnswer) {
+                                b.style.background = "rgba(34, 197, 94, 0.2)";
+                                b.style.borderColor = "#22c55e";
+                            }
+                        });
+                    }
+                    scoreEl.textContent = `Điểm số: ${score} / ${totalQuestions}`;
+                };
+                optionsEl.appendChild(optBtn);
+            });
+        }
+        const themeToggleBtn = document.getElementById('themeToggleBtn');
+        const themeIcon = document.getElementById('themeIcon');
+        const htmlElement = document.documentElement;
+        function updateThemeIcon(theme) {
+            if (theme === 'light') {
+                themeIcon.className = "fa-solid fa-sun"; themeIcon.style.color = "#f59e0b";
+            } else {
+                themeIcon.className = "fa-solid fa-moon"; themeIcon.style.color = "var(--text-primary)";
+            }
+        }
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        htmlElement.setAttribute('data-theme', savedTheme);
+        updateThemeIcon(savedTheme);
+        themeToggleBtn.addEventListener('click', () => {
+            const currentTheme = htmlElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            htmlElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        });
+        function updateDateTime() {
+            const now = new Date();
+            const day = String(now.getDate()).padStart(2, '0');
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const year = now.getFullYear();
+            document.getElementById('dateText').textContent = `${day}/${month}/${year}`;
+            let hours = now.getHours();
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12 || 12;
+            document.getElementById('timeText').textContent = `${String(hours).padStart(2, '0')}:${minutes}:${seconds} ${ampm}`;
+        }
+        setInterval(updateDateTime, 1000);
+        updateDateTime();
+        if ('getBattery' in navigator) {
+            navigator.getBattery().then(function(battery) {
+                const batteryLevelText = document.getElementById('batteryLevelText');
+                function updateBatteryInfo() {
+                    batteryLevelText.textContent = Math.round(battery.level * 100) + '%';
+                }
+                updateBatteryInfo();
+                battery.addEventListener('levelchange', updateBatteryInfo);
+            });
+        }
+    </script>
+</body>
+</html>

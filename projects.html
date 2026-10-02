@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects & Works - lnhwtan</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="custom-cursor">
+        <div class="cursor-dot"></div>
+        <div class="cursor-outline"></div>
+    </div>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo"><span>lnhwtan</span></a>
+            <div class="nav-links">
+                <a href="index.html">Trang chủ</a>
+                <a href="projects.html" class="active">Dự án</a>
+                <a href="about.html">Về tôi</a>
+                <a href="contact.html">Liên hệ</a>
+            </div>
+            <div class="nav-right-info">
+                <div class="system-widget-container">
+                    <div class="sys-badge battery-box" id="batteryIndicator" title="Trạng thái pin thiết bị">
+                        <i class="fa-solid fa-battery-half" id="batteryIcon"></i>
+                        <span id="batteryLevelText">--%</span>
+                    </div>
+                    <div class="sys-badge date-box" title="Ngày tháng năm hiện tại">
+                        <i class="fa-regular fa-calendar-days"></i>
+                        <span id="dateText">--/--/----</span>
+                    </div>
+                    <div class="sys-badge time-box" title="Thời gian hệ thống">
+                        <i class="fa-regular fa-clock"></i>
+                        <span id="timeText">--:--:-- --</span>
+                    </div>
+                    <div class="sys-badge custom-dropdown" id="customLangDropdown" title="Chọn ngôn ngữ">
+                        <i class="fa-solid fa-globe" style="color: var(--accent-cyan);"></i>
+                        <div class="dropdown-selected" id="dropdownSelected">
+                            <span id="currentLangText">VN</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+                        <div class="dropdown-menu" id="dropdownMenu">
+                            <div class="dropdown-item selected" data-value="vi">VN <span>✓</span></div>
+                            <div class="dropdown-item" data-value="en">ENG</div>
+                            <div class="dropdown-item" data-value="ja">JP</div>
+                        </div>
+                    </div>
+                    <button class="sys-badge theme-toggle-btn" id="themeToggleBtn" title="Chuyển giao diện Sáng/Tối">
+                        <i class="fa-solid fa-moon" id="themeIcon"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="menu-btn" id="menuBtn">
+                <i class="fa-solid fa-bars"></i>
+            </div>
+        </div>
+    </header>
+    <main class="section-container" style="padding-top: 9rem;">
+        <div class="page-header" style="text-align: center; margin-bottom: 3rem;">
+            <div class="badge">
+                <i class="fa-solid fa-code-branch"></i> <span id="badge-text">PORTFOLIO & WORKS</span>
+            </div>
+            <h1 id="page-title" style="font-size: 2.2rem; margin-bottom: 1rem;">Dự án <span>Cá nhân</span></h1>
+            <p id="page-subtitle" style="color: var(--text-secondary); font-size: 1.05rem;">Nơi tổng hợp các sản phẩm lập trình, web app và ứng dụng tiện ích của mình.</p>
+        </div>
+        <div class="grid-3cols" id="projectsContainer">
+            <div class="project-card-custom" data-cursor-hover>
+                <div class="feature-icon">
+                    <i class="fa-solid fa-binary"></i>
+                </div>
+                <h3>Binary Converter</h3>
+                <p>Công cụ chuyển đổi linh hoạt giữa hệ nhị phân (Binary), thập phân (Decimal), thập lục phân (Hexadecimal) và văn bản.</p>
+                <div class="project-tags-flex" style="margin-bottom: 1.5rem;">
+                    <span class="mini-badge">HTML5</span>
+                    <span class="mini-badge">CSS3</span>
+                    <span class="mini-badge">JavaScript</span>
+                </div>
+                <a href="binary.html" class="btn secondary-btn" style="width: 100%; justify-content: center;">
+                    <i class="fa-solid fa-arrow-right">></i> Trải nghiệm ngay
+                </a>
+            </div>
+        </div>
+        <div style="margin-top: 3rem;">
+            <a href="index.html" class="btn secondary-btn">
+                <i class="fa-solid fa-arrow-left"></i> <span id="txt-back">Quay lại trang chủ</span>
+            </a>
+        </div>
+    </main>
+    <footer>
+        <div class="footer-container">
+            <div class="footer-col">
+                <h3><span>lnhwtan</span></h3>
+            </div>
+            <div class="footer-col">
+                <h4 id="footer-nav-title">Điều hướng</h4>
+                <ul>
+                    <li><a href="index.html"><i class="fa-solid fa-chevron-right" style="font-size: 0.6rem;"></i> Trang chủ</a></li>
+                    <li><a href="projects.html"><i class="fa-solid fa-chevron-right" style="font-size: 0.6rem;"></i> Dự án</a>></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4 id="footer-social-title">Kết nối</h4>
+                <div class="footer-socials">
+                    <a href="https://github.com/lnhwtan" target="_blank"><i class="fa-brands fa-github"></i></a>
+                    <a href="#" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Lê Nhựt An. All rights reserved.</p>
+        </div>
+    </footer>
+    <script>
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+        window.addEventListener('mousemove', (e) => {
+            const posX = e.clientX;
+            const posY = e.clientY;
+            cursorDot.style.transform = `translate(${posX}px, ${posY}px) translate(-50%, -50%)`;
+            cursorOutline.style.transform = `translate(${posX}px, ${posY}px) translate(-50%, -50%)`;
+        });
+        const interactiveElements = document.querySelectorAll('a, button, input, .custom-dropdown, [data-cursor-hover]');
+        interactiveElements.forEach(el => {
+            el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+            el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+        });
+        const translations = {
+            vi: {
+                pageTitle: "Dự án <span>Cá nhân</span>",
+                pageSubtitle: "Nơi tổng hợp các sản phẩm lập trình, web app và ứng dụng tiện ích của mình.",
+                back: "Quay lại trang chủ"
+            },
+            en: {
+                pageTitle: "Personal <span>Projects</span>",
+                pageSubtitle: "A collection of my programming projects, web apps, and utility applications.",
+                back: "Back to Home"
+            },
+            ja: {
+                pageTitle: "マイ <span>プロジェクト</span>",
+                pageSubtitle: "私のプログラミングプロジェクト、ウェブアプリ、アプリケーションのコレクション。",
+                back: "ホームに戻る"
+            }
+        };
+        let currentLang = localStorage.getItem('language') || 'vi';
+        function setLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('language', lang);
+            const t = translations[lang] || translations['vi'];
+            document.getElementById('page-title').innerHTML = t.pageTitle;
+            document.getElementById('page-subtitle').textContent = t.pageSubtitle;
+            document.getElementById('txt-back').textContent = t.back;
+        }
+        const customLangDropdown = document.getElementById('customLangDropdown');
+        const currentLangText = document.getElementById('currentLangText');
+        const dropdownItems = document.querySelectorAll('.dropdown-item');
+        setLanguage(currentLang);
+        currentLangText.textContent = currentLang === 'vi' ? 'VN' : (currentLang === 'en' ? 'ENG' : 'JP');
+        dropdownItems.forEach(item => {
+            if (item.getAttribute('data-value') === currentLang) {
+                item.classList.add('selected');
+            } else {
+                item.classList.remove('selected');
+            }
+        });
+        customLangDropdown.addEventListener('click', (e) => {
+            e.stopPropagation();
+            customLangDropdown.classList.toggle('active');
+        });
+        window.addEventListener('click', () => {
+            customLangDropdown.classList.remove('active');
+        });
+        dropdownItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const lang = item.getAttribute('data-value');
+                const text = item.textContent.replace(' ✓', '');
+                currentLangText.textContent = text;
+                setLanguage(lang);
+                dropdownItems.forEach(i => i.classList.remove('selected'));
+                item.classList.add('selected');
+                customLangDropdown.classList.remove('active');
+            });
+        });
+        const themeToggleBtn = document.getElementById('themeToggleBtn');
+        const themeIcon = document.getElementById('themeIcon');
+        const htmlElement = document.documentElement;
+        function updateThemeIcon(theme) {
+            if (theme === 'light') {
+                themeIcon.className = "fa-solid fa-sun";
+                themeIcon.style.color = "#f59e0b";
+            } else {
+                themeIcon.className = "fa-solid fa-moon";
+                themeIcon.style.color = "var(--text-primary)";
+            }
+        }
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        htmlElement.setAttribute('data-theme', savedTheme);
+        updateThemeIcon(savedTheme);
+        themeToggleBtn.addEventListener('click', () => {
+            const currentTheme = htmlElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            htmlElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        });
+        const menuBtn = document.getElementById('menuBtn');
+        const navLinks = document.querySelector('.nav-links');
+        if (menuBtn) {
+            menuBtn.addEventListener('click', () => {
+                navLinks.classList.toggle('active-menu');
+            });
+        }
+        function updateDateTime() {
+            const now = new Date();
+            const day = String(now.getDate()).padStart(2, '0');
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const year = now.getFullYear();
+            const dateEl = document.getElementById('dateText');
+            if(dateEl) dateEl.textContent = `${day}/${month}/${year}`;
+            let hours = now.getHours();
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12;
+            const formattedHours = String(hours).padStart(2, '0');
+            const timeEl = document.getElementById('timeText');
+            if(timeEl) timeEl.textContent = `${formattedHours}:${minutes}:${seconds} ${ampm}`;
+        }
+        setInterval(updateDateTime, 1000);
+        updateDateTime();
+        if ('getBattery' in navigator) {
+            navigator.getBattery().then(function(battery) {
+                const batteryLevelText = document.getElementById('batteryLevelText');
+                const batteryIcon = document.getElementById('batteryIcon');
+                function updateBatteryInfo() {
+                    const level = Math.round(battery.level * 100);
+                    if(batteryLevelText) batteryLevelText.textContent = level + '%';
+                    if (battery.charging) {
+                        batteryIcon.className = "fa-solid fa-bolt";
+                        batteryIcon.style.color = "#fde047";
+                    } else {
+                        batteryIcon.style.color = "var(--accent-cyan)";
+                        if (level >= 80) batteryIcon.className = "fa-solid fa-battery-full";
+                        else if (level >= 50) batteryIcon.className = "fa-solid fa-battery-three-quarters";
+                        else if (level >= 25) batteryIcon.className = "fa-solid fa-battery-half";
+                        else batteryIcon.className = "fa-solid fa-battery-quarter";
+                    }
+                }
+                updateBatteryInfo();
+                battery.addEventListener('levelchange', updateBatteryInfo);
+                battery.addEventListener('chargingchange', updateBatteryInfo);
+            });
+        } else {
+            const batteryInd = document.getElementById('batteryIndicator');
+            if(batteryInd) batteryInd.style.display = 'none';
+        }
+    </script>
+</body>
+</html>
